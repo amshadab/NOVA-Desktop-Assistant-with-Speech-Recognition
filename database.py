@@ -3,8 +3,11 @@ from firebase_admin import credentials,  firestore
 import pyrebase
 from datetime import datetime
 from cryptography.fernet import Fernet
-from config import KEY,FKEY,AUTHDOMAIN,STORAGEBUCKET,PROJECTID
+from config import FKEY,AUTHDOMAIN,STORAGEBUCKET,PROJECTID
 import traceback
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
+import base64
 
 # Initialize Firebase Admin SDK with your service account
 cred = credentials.Certificate("desktop-assistant-f315e-firebase-adminsdk-ilw8c-fb4eac3517.json")
@@ -27,19 +30,49 @@ firebase_config = {
 firebase = pyrebase.initialize_app(firebase_config)
 auth_client = firebase.auth()
 
-key = KEY
-fernet = Fernet(key)
+
+
+def generate_key(email, password):
+    """Generate a 256-bit AES key using email and password as salt."""
+    salt = (email + password).encode()
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+    )
+    return base64.urlsafe_b64encode(kdf.derive(salt))
+
+def save_key_to_config(key):
+    with open("user_config.txt", "a") as file:  # Open in append mode
+       file.write("\n" + key.decode()) 
+
+def fetch_second_line():
+   
+    with open("user_config.txt", 'r') as file:
+        lines = file.readlines()
+        return lines[1].strip() if len(lines) > 1 else None  # Return second line if exists
 
 
 # Encrypt function using the single key
-def encrypt_data(data):
-    return fernet.encrypt(data.encode())
+def encrypt_data(message):
+    key=fetch_second_line()
+    cipher = Fernet(key)
+    encrypted_message = cipher.encrypt(message.encode())
+    return encrypted_message
 
 
 # Decrypt function using the single key
-def decrypt_data(encrypted_data):
-    return fernet.decrypt(encrypted_data).decode()
+def decrypt_data(encrypted_message):
+    key=fetch_second_line()
+    cipher = Fernet(key)
+    decrypted_message = cipher.decrypt(encrypted_message).decode()
+    return decrypted_message
 
+def get_first_line_from_config():
+    with open("user_config.txt", 'r') as file:
+        first_line = file.readline().strip()  # Read the first line and remove leading/trailing spaces
+        return first_line
 
 # Sign-Up Function
 # Sign-Up Function
@@ -65,7 +98,10 @@ def sign_up(email, password, first_name, last_name, gender):
         with open("user_config.txt", "w") as fw:
             fw.write(user_id)
         print(f"User ID written to user_config.txt: {user_id}")
-
+        
+        key=generate_key(email,password)
+        save_key_to_config(key)
+        
         return 0
     except Exception as e:
         print(f"Error during sign-up: {e}")
@@ -95,6 +131,9 @@ def log_in(email, password):
             fw.write(user_id)
         print(f"User ID written to user_config.txt: {user_id}")
 
+        key=generate_key(email,password)
+        save_key_to_config(key)
+
         return 0
     except Exception as e:
         print(f"Error during login: {e}")
@@ -116,8 +155,7 @@ def log_in(email, password):
     
 def save_conversation(user_input, assistant_response):
     try:
-        with open("user_config.txt", "r") as fr:
-            user_id = fr.read().strip()
+        user_id=get_first_line_from_config()
         
         # Encrypt the data
         user_input = encrypt_data(user_input).decode('utf-8')  # Convert bytes to string
@@ -139,9 +177,7 @@ def save_conversation(user_input, assistant_response):
 # Retrieve user conversations
 def get_conversations():
     try:
-        with open("user_config.txt", "r") as fr:
-            user_id = fr.read().strip()
-
+        user_id=get_first_line_from_config()
         conversations = db.collection('users').document(user_id).collection('conversations').order_by('timestamp').get()
         
         if not conversations:
@@ -177,19 +213,25 @@ def get_conversations():
 
   # This will print the full traceback of the error
 
-key = KEY
-fernet = Fernet(key)
+
 
 # You can save the key in a secure place (for example, a file or environment variable)
 # Saving the key in a file
 
 # Encrypt function using the single key
-def encrypt_data(data):
-    return fernet.encrypt(data.encode())
+def encrypt_data(message):
+    key=fetch_second_line()
+    cipher = Fernet(key)
+    encrypted_message = cipher.encrypt(message.encode())
+    return encrypted_message
+
 
 # Decrypt function using the single key
-def decrypt_data(encrypted_data):
-    return fernet.decrypt(encrypted_data).decode()
+def decrypt_data(encrypted_message):
+    key=fetch_second_line()
+    cipher = Fernet(key)
+    decrypted_message = cipher.decrypt(encrypted_message).decode()
+    return decrypted_message
 
 # Example Usage:
 # Sign up a new user
@@ -202,8 +244,7 @@ def decrypt_data(encrypted_data):
 def get_username():
     try:
         # Read the user ID from the user_config.txt file
-        with open("user_config.txt", "r") as fr:
-            user_id = fr.read().strip()
+        user_id=get_first_line_from_config()
 
         # Fetch the user's document from Firestore
         user_doc = db.collection('users').document(user_id).get()
@@ -245,8 +286,7 @@ def get_user_initials():
     
 def get_all_conversations():
     try:
-        with open("user_config.txt", "r") as fr:
-            user_id = fr.read().strip()
+        user_id=get_first_line_from_config()
 
         # Fetch all conversations ordered by timestamp
         conversations = db.collection('users').document(user_id).collection('conversations').order_by('timestamp').get()
@@ -299,20 +339,20 @@ def get_last_five_conversations():
 
     return last_five_conversations_reversed
 
-def get_user_id_from_config():
-    """Reads the user ID from user_config.txt"""
-    try:
-        with open("user_config.txt", "r") as file:
-            user_id = file.read().strip()
-        return user_id
-    except FileNotFoundError:
-        return None  # Return None instead of printing
+# def get_user_id_from_config():
+#     """Reads the user ID from user_config.txt"""
+#     try:
+#         with open("user_config.txt", "r") as file:
+#             user_id = file.read().strip()
+#         return user_id
+#     except FileNotFoundError:
+#         return None  # Return None instead of printing
 
 def delete_conversation():
     """Deletes the user's conversation from Firestore and returns status message."""
     try:
         # Step 1: Get user ID from user_config.txt
-        user_id = get_user_id_from_config()
+        user_id = get_first_line_from_config()
         if not user_id:
             return "Error: No user ID found in user_config.txt."
 
@@ -350,8 +390,7 @@ db = firestore.client()
 def delete_account():
     try:
         # Read and store user_id from user_config.txt
-        with open("user_config.txt", "r") as fr:
-            user_id = fr.read().strip()
+        user_id=get_first_line_from_config()
 
         if not user_id:
             print("No user ID found.")

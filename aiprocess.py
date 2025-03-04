@@ -21,6 +21,8 @@ commands_list = [
     "play video on youtube <video_name>",
     "current time",
     "battery",
+    "pdf <content>"
+    "theme",
     "current date",
     "ai mode <query>",
     "shutdown",
@@ -95,6 +97,10 @@ def processcmd(command):
     f"- For apps, return 'open <app_name>' or 'close <app_name>' if the app exists in {app_keys}, or inform the user that the app is not available if it's not in {app_keys}.\n"
     f"- If the command is incomplete, return 'Incomplete command: <correct_command>'.\n"
     f"- If the user asks a question related to any domain or field, interpret the question and return 'AI mode: <answer>'."
+    f"- If the user asks to change or switch themes, return theme"
+    f"- If the user asks to generate a PDF with provided content, return 'pdf <user_content>'.\n"
+    f"- If the user asks to generate a PDF with specific content like code or generated text, and no content is provided, return 'pdf <generated_content_by_u>', where you generate the content (e.g., 'pdf print(\"Hello World\")' if the user asks for 'Hello World code in Python').\n"
+
     f"- If the user asks about themselves, return 'user'\n"
     f"- If the command is incomplete or not recognized, generate a response yourself and return it.\n"
     f"- If the user refers to something from previous messages, use the context from past interactions in {previous_chats}.\n"

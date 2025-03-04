@@ -2,6 +2,7 @@ import pyttsx3
 import speech_recognition as sr
 import datetime
 import requests
+from fpdf import FPDF
 import wikipedia
 import webbrowser
 import pywhatkit as kit
@@ -11,6 +12,8 @@ import AppOpener
 import gemini_ai
 import time
 import pyautogui
+import subprocess
+import os
 import io
 import datetime
 from database import *
@@ -24,7 +27,7 @@ obj=None
 msg = None
 engine = pyttsx3.init("sapi5")
 commands = ["open", "shutdown", "ip address of my device", "minimise window","close window","maximise window","go to","search on google","search on wikipedia",
-            "current temperature","send message","ai mode","sleep","current date","restart","play video on youtube","help","close","send message","battery","current time","Incomplete","mute","unmute","exit","user","type"]
+            "current temperature","send message","ai mode","sleep","current date","restart","play video on youtube","help","close","send message","battery","current time","Incomplete","mute","unmute","exit","user","type","theme","pdf"]
 # Text to speak function
 def set_speech_rate(rate):
     engine.setProperty('rate', rate)
@@ -379,11 +382,11 @@ def ai_mode(query):
     return result
 
 def current_time():
-    time = datetime.datetime.now().strftime("%I:%M %p") 
+    time = datetime.now().strftime("%I:%M %p") 
     return f"The current time is {time}"
 
 def exit_fucntion():
-    now = int(datetime.datetime.now().hour)
+    now = datetime.now().hour
     
     if 5 <= now < 12:
         print ("Goodbye! Have a great day ahead!")
@@ -407,10 +410,60 @@ def write_anything(text):
     pyautogui.write(text, interval=0.1)
     return "Your text is successfully written"
 
-    
+def toggle_theme():
+    # Query current theme setting from the registry
+    result = subprocess.run(
+        ["reg", "query", "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "/v", "AppsUseLightTheme"],
+        capture_output=True, text=True)
+
+    # If the result contains 'AppsUseLightTheme' with value 1, it's in light mode, so switch to dark mode
+    if "1" in result.stdout:
+        # Set to dark theme
+        os.system("reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v AppsUseLightTheme /t REG_DWORD /d 0 /f")
+        os.system("reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v SystemUsesLightTheme /t REG_DWORD /d 0 /f")
+        return "Theme is now set to Dark"
+    else:
+        # Set to light theme
+        os.system("reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v AppsUseLightTheme /t REG_DWORD /d 1 /f")
+        os.system("reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v SystemUsesLightTheme /t REG_DWORD /d 1 /f")
+        return "Theme is now set to Light"
+
 def current_date():
-    date=date=datetime.datetime.now().strftime("%B %d, %Y")
-    return f"Today's date is {date}"
+    current_date = datetime.now()
+    date_str = current_date.strftime("%B %d, %Y")
+    return f"Today's date is {date_str}"
+
+def generate_pdf(content):
+    # Get the Downloads folder path
+    downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+
+    # Specify the base filename for the PDF
+    base_filename = "NOVA_generated_pdf"
+    pdf_filename = base_filename + ".pdf"
+    pdf_path = os.path.join(downloads_folder, pdf_filename)
+
+    # Check if file already exists and create a unique filename
+    counter = 1
+    while os.path.exists(pdf_path):
+        pdf_filename = f"{base_filename}({counter}).pdf"
+        pdf_path = os.path.join(downloads_folder, pdf_filename)
+        counter += 1
+
+    # Create PDF instance
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+
+    # Set font for the PDF
+    pdf.set_font("Arial", size=12)
+
+    # Add content to the PDF
+    pdf.multi_cell(0, 10, content)
+
+    # Output the PDF to the Downloads folder
+    pdf.output(pdf_path)
+
+    return f"PDF generated successfully: {pdf_path}"
 
 def default_fucntion(query):
     return query
@@ -439,7 +492,9 @@ command_actions={
     "help":help_function,
     "close":close_apps,
     "user":user_name,
+    "theme":toggle_theme,
     "type":write_anything,
+    "pdf":generate_pdf,
     "Incomplete":incomplete_command,
     "exit":exit_fucntion
 }
