@@ -1,7 +1,7 @@
 import sys,os,threading
 import time,re,datetime
 from PyQt5.QtWidgets import QApplication, QWidget,QMenu, QVBoxLayout,QAction, QHBoxLayout,QStackedWidget, QLabel, QPushButton, QTextEdit,  QScrollArea, QFrame
-from PyQt5.QtCore import Qt, QSize, QThread, pyqtSignal,QPropertyAnimation,QEvent
+from PyQt5.QtCore import Qt, QSize, QThread, pyqtSignal, QPropertyAnimation, QEvent
 from PyQt5.QtGui import QIcon,QMovie,QPixmap
 from PyQt5 import QtGui
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
@@ -11,6 +11,7 @@ from CustomMessageBox import *
 from backend import *
 import backend as b
 import database as db
+
 BtnTextFont = '25px'
 toggleMic = True
 themeColor = '#0085FF'
@@ -33,7 +34,7 @@ class PopupWindow(QWidget):
     def initUI(self):
         self.setWindowTitle('NOVA')
         self.setStyleSheet("background-color: #07151E; color: #ffffff;")
-        self.setGeometry(0, 0, 300, 300)
+        self.setGeometry(400, 0, 300, 150)
         self.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowStaysOnTopHint)
         btnStyle = f"background-color: #07151E; font-size: {BtnTextFont}; color: {themeColor}; padding: 10px; border-radius:15px; border:5px solid {themeColor}"
 
@@ -41,12 +42,9 @@ class PopupWindow(QWidget):
         layout = QVBoxLayout()
         
         # Top section with centered mic button
-        mic_container = QHBoxLayout()
-        mic_container.addStretch()
+        
         self.mic_button = self.main_window.create_mic_button()
         self.mic_button.clicked.connect(self.main_window.micon)
-        mic_container.addWidget(self.mic_button)
-        mic_container.addStretch()
         
         # Create controls
         self.show_main_button = QPushButton(self)
@@ -62,7 +60,7 @@ class PopupWindow(QWidget):
                         font-size: 30px;
                         font-weight: bold;
                     """)
-        self.state.setFixedWidth(200)
+        self.state.setFixedWidth(400)
         
         self.mute_button = QPushButton()
         self.mute_button.setStyleSheet(btnStyle)
@@ -72,13 +70,13 @@ class PopupWindow(QWidget):
 
         # Bottom section with controls
         bottom_layout = QHBoxLayout()
+        bottom_layout.addWidget(self.mic_button)
         bottom_layout.addWidget(self.state, alignment=Qt.AlignCenter)
         bottom_layout.addWidget(self.mute_button)
         bottom_layout.addWidget(self.show_main_button)
 
         # Add all layouts to main layout
-        layout.addLayout(mic_container)
-        layout.addLayout(bottom_layout, Qt.AlignRight)
+        layout.addLayout(bottom_layout)
 
         self.setLayout(layout)
 
@@ -474,13 +472,8 @@ class NovaInterface(QWidget):
             print(f"Error during account deletion: {e}")
         finally:
             in_custom_message_box = False
-
-    def show_popup(self):
-        self.is_popup_mode = True
-        self.stacked_widget.setCurrentWidget(self.popup_widget)
-        self.setGeometry(0, 0, 300, 300)  # Adjust size for popup mode
-        self.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)
-        self.show()
+  
+    
 
     def show_main_interface(self):
         self.is_popup_mode = False
@@ -499,7 +492,6 @@ class NovaInterface(QWidget):
             self.mic_button.show()
             self.text_mode_button.setIcon(QIcon('icons/keyboard.png'))
             toggleMic = True
-            speak("mic mode")
 
         else:
             self.chat_window.message_input.show()
@@ -508,12 +500,12 @@ class NovaInterface(QWidget):
             self.state.hide()
             self.mic_button.hide()
             toggleMic = False
-            speak("input mode")
+            b.mic_off = True
 
 
     def create_mic_button(self):
         global movie
-        mic_size = 200
+        mic_size = 150
         mic_button = QPushButton(self)
         mic_button.setFixedSize(mic_size , mic_size)
 
@@ -527,6 +519,7 @@ class NovaInterface(QWidget):
         movie.start()
         # movie.stop()
         return mic_button
+        
         
 
 
@@ -672,7 +665,7 @@ class NovaInterface(QWidget):
         now = datetime.now()
         country_code="+91"
         number=f"{country_code}{number}"
-        threading.Thread(target=kit.sendwhatmsg, args=(number, message, now.hour, now.minute+1,1)).start()
+        threading.Thread(target=kit.sendwhatmsg, args=(number, message+"\n", now.hour, now.minute+1)).start()
         self.chat_window.add_message("Message sent to "+number+"\nwill be delivered in a minute")
         time.sleep(1)
 
@@ -703,7 +696,8 @@ class ChatThread(QThread):
      global speaking
      thread = True
      try:
-        self.name.emit(db.get_user_initials())
+        def fecth_converson():
+            self.name.emit(db.get_user_initials())
         conversations = db.get_conversations()
         if conversations :
             
@@ -719,7 +713,7 @@ class ChatThread(QThread):
                     self.message_received.emit(assistant_response)
                 except Exception as decryption_error:
                     print(f"Decryption error for conversation ID {conv.id}: {decryption_error}")
-
+        threading.Thread(target=fecth_converson).start()
 
         # Simulate receiving a message
         wish()
@@ -736,6 +730,7 @@ class ChatThread(QThread):
                 takecmd_ = takecmd()
                 self.state.emit("Recognizing...")
                 query = recoginze(takecmd_).lower()
+
             else:
                 time.sleep(0.1)
                 query = prompt
@@ -749,6 +744,7 @@ class ChatThread(QThread):
             
             self.message_received.emit("You: "+query)
             result = input_from_gui(query,self).replace("*"," ")
+
             if result =="restart_": 
                 self.restart.emit()
                 result = "restarting your computer"
@@ -772,14 +768,12 @@ class ChatThread(QThread):
                 # result = "message send" 
 
             
-            db.save_conversation("You: "+ query,result)
-            for r in result.split("\n"):
-                self.message_received.emit(r)
-                time.sleep(0.05)
+            self.message_received.emit(result)
+            self.message_received.emit("\n")
                 
             self.state.emit("Speaking...")
             
-
+            db.save_conversation("You: "+ query,result)
             delimiters = r"[\n,.:!?;]"  # Regular expression for multiple delimiters
 
             for rt in re.split(delimiters, result):  # Split by multiple delimiters
@@ -789,6 +783,7 @@ class ChatThread(QThread):
                         self.micon.emit()
                         print("mic off")
                         break
+                    self.state.emit(rt)
                     speak(rt)
 
             
@@ -803,7 +798,7 @@ class ChatThread(QThread):
             if toggleMic:
                 self.micon.emit()
             time.sleep(1)
-            if toggleMic:
+            if toggleMic and not b.mic_off:
                 speak("Sir, Do you have any other work")
           
      except Exception as e:

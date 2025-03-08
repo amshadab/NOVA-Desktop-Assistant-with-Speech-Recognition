@@ -10,6 +10,8 @@ import pygetwindow as gw
 import aiprocess as ap
 import AppOpener
 import gemini_ai
+import os
+from docx import Document
 import time
 import pyautogui
 import subprocess
@@ -27,7 +29,7 @@ obj=None
 msg = None
 engine = pyttsx3.init("sapi5")
 commands = ["open", "shutdown", "ip address of my device", "minimise window","close window","maximise window","go to","search on google","search on wikipedia",
-            "current temperature","send message","ai mode","sleep","current date","restart","play video on youtube","help","close","send message","battery","current time","Incomplete","mute","unmute","exit","user","type","theme","pdf"]
+            "current temperature","send message","ai mode","sleep","current date","restart","play video on youtube","help","close","send message","battery","current time","Incomplete","mute","unmute","exit","user","type","theme","pdf","docx"]
 # Text to speak function
 def set_speech_rate(rate):
     engine.setProperty('rate', rate)
@@ -462,8 +464,42 @@ def generate_pdf(content):
 
     # Output the PDF to the Downloads folder
     pdf.output(pdf_path)
+    
+    if os.name == 'nt': 
+        os.startfile(pdf_path)
 
     return f"PDF generated successfully: {pdf_path}"
+
+
+
+def generate_docx(content):
+    # Get the Downloads folder path
+    downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+
+    # Specify the base filename for the DOCX
+    base_filename = "NOVA_generated_docx"
+    docx_filename = base_filename + ".docx"
+    docx_path = os.path.join(downloads_folder, docx_filename)
+
+    # Check if file already exists and create a unique filename
+    counter = 1
+    while os.path.exists(docx_path):
+        docx_filename = f"{base_filename}({counter}).docx"
+        docx_path = os.path.join(downloads_folder, docx_filename)
+        counter += 1
+
+    # Create a new Word document
+    doc = Document()
+    doc.add_paragraph(content)
+
+    # Save the document
+    doc.save(docx_path)
+    
+    if os.name == 'nt': 
+        os.startfile(docx_path)
+
+    return f"DOCX generated successfully: {docx_path}"
+
 
 def default_fucntion(query):
     return query
@@ -495,6 +531,7 @@ command_actions={
     "theme":toggle_theme,
     "type":write_anything,
     "pdf":generate_pdf,
+    "docx":generate_docx,
     "Incomplete":incomplete_command,
     "exit":exit_fucntion
 }

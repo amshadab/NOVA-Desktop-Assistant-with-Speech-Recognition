@@ -13,6 +13,5 @@ firebase-admin
 pyrebase4
 PyQt5
 pyautogui
-transformers
-torch
-diffusers
+FPDF
+python-docx
