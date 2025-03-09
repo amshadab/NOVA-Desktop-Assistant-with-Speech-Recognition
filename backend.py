@@ -9,7 +9,7 @@ import pywhatkit as kit
 import pygetwindow as gw
 import aiprocess as ap
 import AppOpener
-import gemini_ai
+# import gemini_ai
 import os
 from docx import Document
 import time
@@ -29,7 +29,7 @@ obj=None
 msg = None
 engine = pyttsx3.init("sapi5")
 commands = ["open", "shutdown", "ip address of my device", "minimise window","close window","maximise window","go to","search on google","search on wikipedia",
-            "current temperature","send message","ai mode","sleep","current date","restart","play video on youtube","help","close","send message","battery","current time","Incomplete","mute","unmute","exit","user","type","theme","pdf","docx"]
+            "current temperature","send message","sleep","current date","restart","play video on youtube","help","close","send message","battery","current time","Incomplete","mute","unmute","exit","user","type","theme","pdf","docx"]
 # Text to speak function
 def set_speech_rate(rate):
     engine.setProperty('rate', rate)
@@ -379,9 +379,9 @@ def close_apps(app_name):
     except Exception as e:
         return f"Something went wrong {e}"
 
-def ai_mode(query):
-    result=gemini_ai.aispeechmode(query)
-    return result
+# def ai_mode(query):
+#     result=gemini_ai.aispeechmode(query)
+#     return result
 
 def current_time():
     time = datetime.now().strftime("%I:%M %p") 
@@ -523,7 +523,7 @@ command_actions={
     "send message":send_message,
     "current temperature":temperature,
     "current time":current_time,
-    "ai mode":ai_mode,
+    # "ai mode":ai_mode,
     "battery":battery,
     "help":help_function,
     "close":close_apps,

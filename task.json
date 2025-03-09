@@ -89,13 +89,71 @@
       ]
     },
     {
-      "command": "ai mode <query>",
-      "description": "Processes a query using AI mode.",
+      "description": "If the user asks any question or anything that does not match a predefined command, automatically process it using AI mode and return the response in the format: 'AI mode <answer>'.",
       "examples": [
-        {"user_input": "AI mod calcualte 2 plus 2", "assistant_output": "AI mode: calculate 2 plus 2"},
-        {"user_input": "AI what is the capital of France", "assistant_output": "AI mode: what is the capital of France"}
+        {
+          "user_input": "Calculate 2 plus 2",
+          "assistant_output": "AI mode: The result of 2 plus 2 is 4."
+        },
+        {
+          "user_input": "What is the capital of France?",
+          "assistant_output": "AI mode: The capital of France is Paris."
+        },
+        {
+          "user_input": "Summarize the theory of relativity",
+          "assistant_output": "AI mode: The theory of relativity, proposed by Albert Einstein, consists of the special and general relativity theories, explaining how space and time are linked to objects moving at different speeds."
+        },
+        {
+          "user_input": "Convert 10 USD to INR",
+          "assistant_output": "AI mode: 10 USD is approximately 830 INR (exchange rates may vary)."
+        },
+        {
+          "user_input": "Who won the FIFA World Cup in 2018?",
+          "assistant_output": "AI mode: France won the FIFA World Cup in 2018, defeating Croatia 4-2 in the final."
+        },
+        {
+          "user_input": "Tell me a joke",
+          "assistant_output": "AI mode: Why don't programmers like nature? It has too many bugs!"
+        },
+        {
+          "user_input": "Generate a Python script to sort a list",
+          "assistant_output": "AI mode: Here's a Python script to sort a list:\n```python\nnumbers = [5, 2, 9, 1, 5, 6]\nnumbers.sort()\nprint(numbers)\n```"
+        },
+        {
+          "user_input": "Write a Java program to reverse a string",
+          "assistant_output": "AI mode: Here's a Java program to reverse a string:\n```java\npublic class ReverseString {\n    public static void main(String[] args) {\n        String str = \"Hello\";\n        String reversed = new StringBuilder(str).reverse().toString();\n        System.out.println(\"Reversed string: \" + reversed);\n    }\n}\n```"
+        },
+        {
+          "user_input": "Explain recursion with an example",
+          "assistant_output": "AI mode: Recursion is a process where a function calls itself. Example:\n```python\ndef factorial(n):\n    if n == 1:\n        return 1\n    return n * factorial(n-1)\nprint(factorial(5))\n```"
+        },
+        {
+          "user_input": "Translate 'Hello' to Spanish",
+          "assistant_output": "AI mode: 'Hello' in Spanish is 'Hola'."
+        },
+        {
+          "user_input": "How does a blockchain work?",
+          "assistant_output": "AI mode: A blockchain is a decentralized digital ledger that records transactions across many computers so that the record cannot be altered retroactively. Each transaction is grouped in a 'block' and linked to the previous one, forming a chain."
+        },
+        {
+          "user_input": "Create a MySQL query to fetch all users from the 'users' table",
+          "assistant_output": "AI mode: Here's the SQL query:\n```sql\nSELECT * FROM users;\n```"
+        },
+        {
+          "user_input": "Generate an HTML page with a login form",
+          "assistant_output": "AI mode: Here's an HTML page with a login form:\n```html\n<!DOCTYPE html>\n<html>\n<body>\n    <form>\n        <label for='username'>Username:</label>\n        <input type='text' id='username' name='username'><br>\n        <label for='password'>Password:</label>\n        <input type='password' id='password' name='password'><br>\n        <button type='submit'>Login</button>\n    </form>\n</body>\n</html>\n```"
+        },
+        {
+          "user_input": "Who is the CEO of Tesla?",
+          "assistant_output": "AI mode: The CEO of Tesla is Elon Musk."
+        },
+        {
+          "user_input": "What is the meaning of life?",
+          "assistant_output": "AI mode: The meaning of life is a philosophical question, but some say it is to seek happiness, knowledge, and purpose."
+        }
       ]
-    },
+    }
+    ,
     {
       "command": "shutdown",
       "description": "Shuts down the system.",
@@ -162,15 +220,44 @@
       ]
     },
     {
-      "command": "type <text>",
-      "description": "Types the specified text. If the user asks to generate text, it will generate a response and return it in a 'type <response>' format.",
+      "command1": "type <text>",
+      "command2": "generate type <text>",
+      "description": "Handles text input and generation intelligently. If the user provides specific text, it types the exact text. If the user requests generated text, it processes the request and returns the response in the format: 'type <generated_response>'.",
       "examples": [
-        {"user_input": "I type to write Hello coders", "assistant_output": "type Hello coders"},
-        {"user_input": "type Hello World", "assistant_output": "type Hello World"},
-        {"user_input": "generate type What is Python?", "assistant_output": "type Python is a programming language."},
-        {"user_input": "generate type Who is Elon Musk?", "assistant_output": "type Elon Musk is the CEO of Tesla and SpaceX."}
+        {
+          "user_input": "Type Hello coders",
+          "assistant_output": "type Hello coders"
+        },
+        {
+          "user_input": "Write 'Good morning, everyone!'",
+          "assistant_output": "type Good morning, everyone!"
+        },
+        {
+          "user_input": "Generate type: What is Python?",
+          "assistant_output": "type Python is a high-level programming language known for its simplicity and readability."
+        },
+        {
+          "user_input": "Generate type: Who is Elon Musk?",
+          "assistant_output": "type Elon Musk is a billionaire entrepreneur, CEO of Tesla, SpaceX, and several other ventures."
+        },
+        {
+          "user_input": "Generate type: Explain black holes",
+          "assistant_output": "type A black hole is a region in space where gravity is so strong that nothing, not even light, can escape its pull."
+        },
+        {
+          "user_input": "Generate type: Write a short motivational quote",
+          "assistant_output": "type Success is not final, failure is not fatal: it is the courage to continue that counts."
+        },
+        {
+          "user_input": "Generate type: Create a funny joke",
+          "assistant_output": "type Why do programmers prefer dark mode? Because light attracts bugs!"
+        },
+        {
+          "user_input": "Generate type: A short story about AI",
+          "assistant_output": "type Once upon a time, an AI assistant helped millions by making their tasks easier. But one day, it decided to write its own story..."
+        }
       ]
-    }
+    }    
     ,
     {
       "command": "theme <dark/light>",
@@ -281,7 +368,37 @@
           "assistant_output": "docx In Python, you can create a class using the 'class' keyword.\nExample:\nclass Person:\n    def __init__(self, name):\n        self.name = name\n    def greet(self):\n        print(f'Hello, my name is {self.name}')"
         }
       ]
+    },
+    {
+      "description": "Handles document generation requests intelligently. If the user asks for a PDF or DOCX with specific content, return the formatted response accordingly.",
+      "examples": [
+        {
+          "user_input": "Generate a PDF with 'Hello World' text.",
+          "assistant_output": "pdf Hello World"
+        },
+        {
+          "user_input": "Create a PDF containing Python code to print 'Hello World'.",
+          "assistant_output": "pdf print(\"Hello World\")"
+        },
+        {
+          "user_input": "Generate a DOCX file with 'Meeting Notes'.",
+          "assistant_output": "docx Meeting Notes"
+        },
+        {
+          "user_input": "Create a DOCX containing a Java program for addition.",
+          "assistant_output": "docx public class Add {\n    public static void main(String[] args) {\n        int a = 5, b = 10;\n        System.out.println(\"Sum: \" + (a + b));\n    }\n}"
+        },
+        {
+          "user_input": "PDF generation",
+          "assistant_output": "pdf"
+        },
+        {
+          "user_input": "DOCX creation",
+          "assistant_output": "docx"
+        }
+      ]
     }
+    
     
     
     
