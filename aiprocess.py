@@ -63,7 +63,7 @@ def processcmd(command):
 # Convert the JSON data to a formatted string
     json_data_str = json.dumps(task_data, indent=2)
 
-    previous_chats=database.get_all_conversations()
+    previous_chats=database.get_last_five_conversations()
     
     # Refined prompt that asks the AI to match input with the correct command from the list
     prompt = (

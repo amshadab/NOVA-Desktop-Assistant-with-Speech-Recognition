@@ -321,7 +321,7 @@
     },
     {
       "command": "docx <content>",
-      "description": "Generates a DOCX file with the provided content. If the user requests AI-generated content, the assistant will analyze the request, generate the most relevant response, and return it in a 'docx <response>' format.",
+      "description": "Generates a DOCX file only if the user explicitly requests it. If the user provides content, return it in the format 'docx <user_content>'. If the user requests AI-generated content, analyze the request, generate the most relevant response, and return it in the format 'docx <generated_response>'. If no explicit request for a DOCX is made, process the request normally without adding any prefixes.",
       "examples": [
         {
           "user_input": "generate a DOCX with this content: Hello World in Python",
@@ -366,9 +366,18 @@
         {
           "user_input": "generate docx How do I create a class in Python?",
           "assistant_output": "docx In Python, you can create a class using the 'class' keyword.\nExample:\nclass Person:\n    def __init__(self, name):\n        self.name = name\n    def greet(self):\n        print(f'Hello, my name is {self.name}')"
+        },
+        {
+          "user_input": "Tell me about Python functions",
+          "assistant_output": "AI mode: In Python, a function is a reusable block of code that performs a specific task. It is defined using the 'def' keyword.\nExample:\ndef greet():\n    print(\"Hello!\")"
+        },
+        {
+          "user_input": "How do loops work in Python?",
+          "assistant_output": "AI mode: Python has two main types of loops: 'for' loops and 'while' loops. A 'for' loop iterates over sequences, while a 'while' loop runs until a condition is false."
         }
       ]
-    },
+    }
+    ,
     {
       "description": "Handles document generation requests intelligently. If the user asks for a PDF or DOCX with specific content, return the formatted response accordingly.",
       "examples": [

@@ -11,6 +11,7 @@ from CustomMessageBox import *
 from backend import *
 import backend as b
 import database as db
+import markdown
 
 BtnTextFont = '25px'
 toggleMic = True
@@ -81,10 +82,18 @@ class PopupWindow(QWidget):
         self.setLayout(layout)
 
     def show_main_window(self):
+        if not toggleMic:
+            self.main_window.toggle_input_mode()
         self.hide()
         self.main_window.show_main_interface()
 
-class ChatWindow(QWidget,QThread):
+# Add this function to convert markdown to HTML
+def convert_markdown_to_html(text):
+    # Convert markdown to HTML using the markdown library
+    html = markdown.markdown(text, extensions=['extra', 'codehilite'])
+    return html
+
+class ChatWindow(QWidget, QThread):
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -96,7 +105,6 @@ class ChatWindow(QWidget,QThread):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setStyleSheet("background-color: #0F1C25; border: none;")
         self.message_history = []
-
 
         # Widget to hold the layout of chat bubbles
         self.chat_container = QWidget()
@@ -110,9 +118,7 @@ class ChatWindow(QWidget,QThread):
 
         layout.addWidget(self.scroll_area)
 
-
         # Input area
-
         self.input_layout = QHBoxLayout()
         self.input_layout.addStretch()
         self.message_input = QTextEdit()
@@ -178,34 +184,51 @@ class ChatWindow(QWidget,QThread):
             return self.message_history[-1]  # Return last message from history list
         return ""
 
-    
-
-    
-
     def create_bubble_widget(self, message, is_sent):
         # Create a QWidget to act as the message bubble
         bubble_frame = QFrame()
         bubble_layout = QHBoxLayout(bubble_frame)
         if message.startswith("You: "): 
-            is_sent= True
+            is_sent = True
             self.message_history.append(message.replace("You: ",""))
-
-
         
-        bubble = QLabel(message)
+        # Create a label to display the message
+        bubble = QLabel()
         bubble.setTextInteractionFlags(Qt.TextSelectableByMouse)
-
+        
+        # Convert the message from markdown to HTML if not a "You:" message
+        if is_sent:
+            # For user messages, just set the text
+            bubble.setText(message)
+        else:
+            # For bot responses, convert markdown to HTML
+            html_content = convert_markdown_to_html(message)
+            bubble.setTextFormat(Qt.RichText)  # Enable rich text
+            bubble.setText(html_content)
+        
         bubble.setWordWrap(True)
         if not is_sent:
             bubble.setFixedWidth(int(self.scroll_area.width()*0.5))
+        
+        # Add CSS for styling markdown elements
         bubble.setStyleSheet(f"""
         background-color: {themeColor if is_sent else '#0A1E2A'};
         color: white;
         border-radius: 10px;
-        padding: {"10px" if is_sent else "0px"};
-        font-size:{BtnTextFont}
+        padding: {"10px" if is_sent else "10px"};
+        font-size:{BtnTextFont};
+        
+        /* Markdown styling */
+        h1, h2, h3, h4, h5, h6 {{ color: #FFFFFF; font-weight: bold; }}
+        h1 {{ font-size: 1.5em; }}
+        h2 {{ font-size: 1.3em; }}
+        h3 {{ font-size: 1.1em; }}
+        code {{ background-color: #1E3545; padding: 2px 4px; border-radius: 3px; font-family: monospace; }}
+        pre {{ background-color: #1E3545; padding: 10px; border-radius: 5px; font-family: monospace; overflow-x: auto; }}
+        a {{ color: #6CCAFF; text-decoration: underline; }}
+        blockquote {{ border-left: 3px solid #6CCAFF; padding-left: 10px; margin-left: 5px; font-style: italic; }}
+        ul, ol {{ padding-left: 20px; }}
         """)  
-  
 
         if is_sent:
             bubble_layout.addStretch()  # Right-align sent messages
@@ -216,6 +239,7 @@ class ChatWindow(QWidget,QThread):
 
         bubble_layout.setContentsMargins(10, 5, 10, 5)
         return bubble_frame
+    
     def delete_conversation(self):
         # Delete all widgets inside the chat_layout
         db.delete_conversation()
@@ -227,8 +251,6 @@ class ChatWindow(QWidget,QThread):
 
         # Optionally, force a UI update
         self.chat_container.update()
-
-
 
 # NovaInterface with chat integration
 class NovaInterface(QWidget):
@@ -420,12 +442,8 @@ class NovaInterface(QWidget):
         self.main_widget.setLayout(self.main_layout)
         self.stacked_widget.addWidget(self.main_widget)
 
-        self.popup_widget = QWidget()
-        popup_layout = QVBoxLayout()
-        self.popup_mic_button = self.create_mic_button()
-        self.popup_mic_button.clicked.connect(self.micon)
-        popup_layout.addWidget(self.popup_mic_button)
-        self.popup_widget.setLayout(popup_layout)
+        self.popup_widget = QWidget(self.popup)
+        
         self.stacked_widget.addWidget(self.popup_widget)
         self.popup.mute_button.clicked.connect(self.toggle_mute)
 
@@ -508,14 +526,12 @@ class NovaInterface(QWidget):
         mic_size = 150
         mic_button = QPushButton(self)
         mic_button.setFixedSize(mic_size , mic_size)
-
         mic_label = QLabel(mic_button)
         mic_label.setGeometry(0, 0, mic_size , mic_size)
-
-        
         mic_label.setMovie(movie)
         mic_label.setScaledContents(True)
         # movie.finished.connect(movie.start)
+
         movie.start()
         # movie.stop()
         return mic_button
@@ -525,8 +541,12 @@ class NovaInterface(QWidget):
 
     def show_popup(self):
         global toggleMic
+        global movie
         if not toggleMic:
             self.toggle_input_mode()
+            b.mic_off = True 
+            movie.stop()
+            movie.jumpToFrame(0)
         self.hide()
         self.popup.show()
     
@@ -580,7 +600,7 @@ class NovaInterface(QWidget):
 
         
 
-        print("b.mic_off:"+ str(b.mic_off))
+        print("b.mic_off:", b.mic_off)
 
     def toggle_mute(self):
         global speaking
@@ -724,15 +744,16 @@ class ChatThread(QThread):
             if flag:
                 flag= False
             
-            self.state.emit("Listening...")
 
             if toggleMic and not b.mic_off:
+                self.state.emit("Listening...")
                 takecmd_ = takecmd()
                 self.state.emit("Recognizing...")
                 query = recoginze(takecmd_).lower()
 
             else:
-                time.sleep(0.1)
+                self.state.emit("Listening stopped")
+                time.sleep(0.001)
                 query = prompt
                 prompt = "none"
             if query=="none":
@@ -743,7 +764,7 @@ class ChatThread(QThread):
             self.state.emit("Thinking...")
             
             self.message_received.emit("You: "+query)
-            result = input_from_gui(query,self).replace("*"," ")
+            result = input_from_gui(query,self)
 
             if result =="restart_": 
                 self.restart.emit()
