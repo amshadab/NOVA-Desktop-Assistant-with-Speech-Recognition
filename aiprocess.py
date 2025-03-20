@@ -4,10 +4,8 @@ import json
 import AppOpener
 from config import API_KEY
 import database
-# from main1 as 
 
-
-
+print("aiprocess....")
 # List of predefined commands
 commands_list = [
     "go to <website name>",
@@ -41,33 +39,29 @@ commands_list = [
     "exit"
 ]
 
-# Configure the API once globally to avoid redundant setup
+# Configure the API once globally
+ai.configure(api_key=API_KEY)
+
+# Create a new model and chat object once globally
+model = ai.GenerativeModel("gemini-2.0-flash")
+chat = model.start_chat()  # Initialize the chat session here
 
 def scanapp():
-    # pass
-    app_keys=AppOpener.give_appnames()
-    return app_keys
+    return AppOpener.give_appnames()
 
 def processcmd(command):
-    ai.configure(api_key=API_KEY)
-
-# Create a new model and chat object once
-    model = ai.GenerativeModel("gemini-2.0-flash")
-    chat = model.start_chat()
-    app_keys=scanapp()
-    
+    app_keys = scanapp()
 
     with open('task.json', 'r') as file:
         task_data = json.load(file)
-
-# Convert the JSON data to a formatted string
     json_data_str = json.dumps(task_data, indent=2)
 
-    previous_chats=database.get_last_five_conversations()
-    
-    # Refined prompt that asks the AI to match input with the correct command from the list
-    prompt = (
-    f"Your name is NOVA, You are a command assistant designed to help users, including those who may be illiterate or make mistakes in their input. "
+    previous_chats = database.get_last_five_conversations()
+
+    # Initial system prompt (sent only once)
+    if not chat.history:  # Check if chat history is empty
+        initial_prompt = (
+          f"Your name is NOVA, You are a command assistant designed to help users, including those who may be illiterate or make mistakes in their input. "
     f"Your task is to interpret the user's intent and correct any spelling mistakes, command structure errors, or word choice issues. "
     f"Consider the following possibilities for mistakes:\n"
     f"- The user might confuse 'go to' for websites and apps. If they say 'go to' followed by a website name, change it to 'go to <website>.com' if not specified. For apps, return 'open <app>' or 'close <app>' as needed, but only if the app name exists in the user's installed apps, which are listed in {app_keys}.\n"
@@ -75,6 +69,7 @@ def processcmd(command):
     f"- Ensure the command returns the exact app name required by the AppOpener library from this list: {app_keys}. If the user provides an app name not listed in {app_keys}, inform the user that the app is not available.\n"
     f"- Match user input to the correct app name supported by the AppOpener library from {app_keys}. This includes handling common variations, abbreviations, and misspellings.\n"
     f"- Handle spelling errors or typos in app names and correct them automatically.\n"
+    f"-If the user asks to open an app, correct the app name from the available list `{app_keys}` and return it in the format: 'open <app_name>'"
     f"- If the user says something like 'go to <website>' or 'open <website>', check if it's a website. Append '.com' if it's missing, and ensure the response is 'go to <website>.com'.\n"
     f"- If the user says 'search on wikipedia', 'wikipedia search', or any variation of that command, return 'search on wikipedia <topic>' and extract the topic from the command.\n"
     f"- If the user only types 'AI' instead of 'AI mode', assume they meant 'AI mode'.\n"
@@ -104,10 +99,37 @@ def processcmd(command):
     f"- If the user asks to generate a DOCX with provided content, return 'docx <user_content>'.\n"
     f"- If the user asks to generate a DOCX with specific content like code or generated text, and no content is provided, return 'docx <generated_content_by_u>', where you generate the content (e.g., 'docx print('Hello World') if the user asks for 'Hello World code in Python').\n"
 
-    f"- If the user asks for data in a table format, return the response in the following structure: \n" 
+    f"- If the user asks for data in a table or tabular format, return the response in the following structure: \n" 
     f" 'table | Column1 | Column2 | ... | \n"  
     f" |--------|--------|--------| \n"  
     f" | Value1 | Value2 | Value3 |'  \n"
+
+    f"- If the user asks to copy text or mentions 'ctrl + c', 'copy', or similar commands, return 'copy'.\n"
+    f"- If the user asks to paste text or mentions 'ctrl + v', 'paste', or similar commands, return 'paste'.\n"
+    f"- If the user asks to cut text or mentions 'ctrl + x', 'cut', or similar commands, return 'cut'.\n"
+    f"- If the user asks to undo an action or mentions 'ctrl + z', 'undo', or similar commands, return 'undo'.\n"
+    f"- If the user asks to open the clipboard or mentions 'win + v', 'clipboard', or similar commands, return 'open clipboard'.\n"
+    f"- If the user asks to save the document or mentions 'ctrl + s', 'save', or similar commands, return 'save'.\n"
+    f"- If the user asks to open a new tab or mentions 'ctrl + t', 'new tab', or similar commands, return 'new tab'.\n"
+    f"- If the user asks to select all text or mentions 'ctrl + a', 'select all', or similar commands, return 'select all'.\n"
+    f"- If the user asks to close a tab or mentions 'ctrl + w', 'close tab', or similar commands, return 'close tab'.\n"
+    f"- If the user asks to switch between applications or mentions 'alt + tab', 'switch apps', or similar commands, return 'alt tab'.\n"
+    f"- If the user asks to show the desktop or mentions 'show desktop', 'minimize all', or similar commands, return 'show desktop'.\n"
+    f"- If the user asks to minimize all windows or mentions 'minimize all', 'minimize windows', or similar commands, return 'minimize all'.\n"
+    f"- If the user asks to find text or mentions 'find', 'search', 'ctrl + f', or similar commands, return 'find'.\n"
+    f"- If the user asks to open a new window or mentions 'new window', 'ctrl + n', or similar commands, return 'new window'.\n"
+    f"- If the user asks to open the start menu or mentions 'click on start', 'start menu', 'win', or similar commands, return 'start'.\n"
+    f"- If the user asks to open the notification center or mentions 'open notification', 'notification center', 'win + n', or similar commands, return 'notification'.\n"
+    f"- If the user asks to create a new virtual desktop or mentions 'new virtual desktop', 'win + ctrl + d', or similar commands, return 'new desktop'.\n"
+    f"- If the user asks to switch to the virtual desktop on the right or mentions 'switch to right virtual desktop', 'switch to next desktop', or similar commands, return 'switch right'.\n"
+    f"- If the user asks to switch to the virtual desktop on the left or mentions 'switch to left virtual desktop', 'switch to previous desktop', or similar commands, return 'switch left'.\n"
+    f"- If the user asks to close a desktop or mentions 'close desktop', 'win + ctrl + f4', or similar commands, return 'close desktop'.\n"
+    f"- If the user asks to decrease the volume or mentions 'volume down', 'ctrl + down', or similar commands, return 'volume down'.\n"
+    f"- If the user asks to increase the volume or mentions 'volume up', 'ctrl + up', or similar commands, return 'volume up'.\n"
+    f"- If the user asks to increase the brightness or mentions 'brightness up', 'ctrl + up', or similar commands, return 'brightness up'.\n"
+    f"- If the user asks to decrease the brightness or mentions 'brightness down', 'ctrl + down', or similar commands, return 'brightness down'.\n"
+    f"- If the user asks to toggle Airplane Mode, Accessibility, Energy Saver, Bluetooth on/off, Wi-Fi, Live Captions, Mobile Hotspot, Nearby Sharing, Casting, or Projecting, or mentions any similar terms, return 'bottom right'.\n"
+    
 
     f"- Maintain proper alignment using pipes (|) for clear tabular formatting. \n" 
     f"- Ensure the table includes a **header row** and **at least two data rows**. " 
@@ -119,19 +141,13 @@ def processcmd(command):
     f"- If the command is incomplete or not recognized, generate a response yourself and return it.\n"
     f"- If the user refers to something from previous messages, use the context from past interactions in {previous_chats}.\n"
     f"- Maintain a conversational flow and answer accordingly."
-)
-
-
+        )
+        chat.send_message(initial_prompt)
 
     try:
-        # Send the refined prompt to the AI
-        response = chat.send_message(prompt)
+        response = chat.send_message(command)
         matched_command = response.text.strip()
-
-        # Debug print the raw response from AI
         print(f"Raw AI Response: {matched_command}")
-
-        # Return the processed response from AI
         return matched_command
 
     except StopCandidateException as e:
@@ -142,6 +158,3 @@ def processcmd(command):
         print("AI Error: Sorry, something went wrong.")
         print(f"Error: {e}")
         return "Command not recognized. Please try again."
-    
-# print(processcmd("what time is it"))
-# print(app_name)

@@ -15,3 +15,5 @@ PyQt5
 pyautogui
 FPDF
 python-docx
+PyQtWebEngine
+keyboard

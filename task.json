@@ -22,6 +22,7 @@
       "examples": [
         {"user_input": "opne calclator", "assistant_output": "open calculator"},
         {"user_input": "launch notepad", "assistant_output": "open notepad"},
+        {"user_input": "open chatgpt", "assistant_output": "open chatgpt"},
         {"user_input": "open", "assistant_output": "Incomplete command: open <app_name>"}
       ]
     },
@@ -376,7 +377,262 @@
           "assistant_output": "AI mode: Python has two main types of loops: 'for' loops and 'while' loops. A 'for' loop iterates over sequences, while a 'while' loop runs until a condition is false."
         }
       ]
+    },
+    {
+      "commands": [
+        {
+          "command": "copy",
+          "description": "Copies the selected text.",
+          "examples": [
+            {"user_input": "ctrl + c", "assistant_output": "copy"},
+            {"user_input": "copy text", "assistant_output": "copy"},
+            {"user_input": "copi", "assistant_output": "copy"},
+            {"user_input": "coppy", "assistant_output": "copy"}
+          ]
+        },
+        {
+          "command": "paste",
+          "description": "Pastes the copied text.",
+          "examples": [
+            {"user_input": "ctrl + v", "assistant_output": "paste"},
+            {"user_input": "paste text", "assistant_output": "paste"},
+            {"user_input": "pasta", "assistant_output": "paste"},
+            {"user_input": "past", "assistant_output": "paste"}
+          ]
+        },
+        {
+          "command": "cut",
+          "description": "Cuts the selected text.",
+          "examples": [
+            {"user_input": "ctrl + x", "assistant_output": "cut"},
+            {"user_input": "cut text", "assistant_output": "cut"},
+            {"user_input": "ct", "assistant_output": "cut"},
+            {"user_input": "cot", "assistant_output": "cut"}
+          ]
+        },
+        {
+          "command": "undo",
+          "description": "Undoes the last action.",
+          "examples": [
+            {"user_input": "ctrl + z", "assistant_output": "undo"},
+            {"user_input": "undo action", "assistant_output": "undo"},
+            {"user_input": "undoo", "assistant_output": "undo"},
+            {"user_input": "und", "assistant_output": "undo"}
+          ]
+        },
+        {
+          "command": "open clipboard",
+          "description": "Opens the clipboard.",
+          "examples": [
+            {"user_input": "win + v", "assistant_output": "open clipboard"},
+            {"user_input": "clipboard", "assistant_output": "open clipboard"},
+            {"user_input": "clipbord", "assistant_output": "open clipboard"},
+            {"user_input": "clipbrd", "assistant_output": "open clipboard"}
+          ]
+        },
+        {
+          "command": "save",
+          "description": "Saves the document.",
+          "examples": [
+            {"user_input": "ctrl + s", "assistant_output": "save"},
+            {"user_input": "save document", "assistant_output": "save"},
+            {"user_input": "sve", "assistant_output": "save"},
+            {"user_input": "sav", "assistant_output": "save"}
+          ]
+        },
+        {
+          "command": "new tab",
+          "description": "Opens a new tab in the browser.",
+          "examples": [
+            {"user_input": "ctrl + t", "assistant_output": "new tab"},
+            {"user_input": "open new tab", "assistant_output": "new tab"},
+            {"user_input": "new tab", "assistant_output": "new tab"},
+            {"user_input": "new tb", "assistant_output": "new tab"}
+          ]
+        },
+        {
+          "command": "select all",
+          "description": "Selects all text or items.",
+          "examples": [
+            {"user_input": "ctrl + a", "assistant_output": "select all"},
+            {"user_input": "select all text", "assistant_output": "select all"},
+            {"user_input": "selct all", "assistant_output": "select all"},
+            {"user_input": "sele all", "assistant_output": "select all"}
+          ]
+        },
+        {
+          "command": "close tab",
+          "description": "Closes the current tab.",
+          "examples": [
+            {"user_input": "ctrl + w", "assistant_output": "close tab"},
+            {"user_input": "close current tab", "assistant_output": "close tab"},
+            {"user_input": "close tb", "assistant_output": "close tab"},
+            {"user_input": "closs tab", "assistant_output": "close tab"}
+          ]
+        },
+        {
+          "command": "alt tab",
+          "description": "Switches between open applications.",
+          "examples": [
+            {"user_input": "alt + tab", "assistant_output": "alt tab"},
+            {"user_input": "switch apps", "assistant_output": "alt tab"},
+            {"user_input": "switch app", "assistant_output": "alt tab"},
+            {"user_input": "altab", "assistant_output": "alt tab"}
+          ]
+        },
+        {
+          "command": "show desktop",
+          "description": "Minimizes all windows to show the desktop.",
+          "examples": [
+            {"user_input": "show desktop", "assistant_output": "show desktop"},
+            {"user_input": "minimize all", "assistant_output": "show desktop"},
+            {"user_input": "minimze all", "assistant_output": "show desktop"},
+            {"user_input": "minimize windws", "assistant_output": "show desktop"}
+          ]
+        },
+        {
+          "command": "minimize all",
+          "description": "Minimizes all windows.",
+          "examples": [
+            {"user_input": "minimize all", "assistant_output": "minimize all"},
+            {"user_input": "minimize windows", "assistant_output": "minimize all"},
+            {"user_input": "minmize all", "assistant_output": "minimize all"},
+            {"user_input": "min windws", "assistant_output": "minimize all"}
+          ]
+        },
+        {
+          "command": "find",
+          "description": "Finds text within a document or webpage.",
+          "examples": [
+            {"user_input": "ctrl + f", "assistant_output": "find"},
+            {"user_input": "find text", "assistant_output": "find"},
+            {"user_input": "find txt", "assistant_output": "find"},
+            {"user_input": "search text", "assistant_output": "find"}
+          ]
+        },
+        {
+          "command": "new window",
+          "description": "Opens a new window.",
+          "examples": [
+            {"user_input": "ctrl + n", "assistant_output": "new window"},
+            {"user_input": "open new window", "assistant_output": "new window"},
+            {"user_input": "new wndow", "assistant_output": "new window"},
+            {"user_input": "new windw", "assistant_output": "new window"}
+          ]
+        },
+        {
+          "command": "start",
+          "description": "Opens the start menu.",
+          "examples": [
+            {"user_input": "click on start", "assistant_output": "start"},
+            {"user_input": "start menu", "assistant_output": "start"},
+            {"user_input": "win", "assistant_output": "start"},
+            {"user_input": "startmmenu", "assistant_output": "start"}
+          ]
+        },
+        {
+          "command": "notification",
+          "description": "Opens the notification center.",
+          "examples": [
+            {"user_input": "win + n", "assistant_output": "notification"},
+            {"user_input": "open notification", "assistant_output": "notification"},
+            {"user_input": "notifcation center", "assistant_output": "notification"},
+            {"user_input": "notification cener", "assistant_output": "notification"}
+          ]
+        },
+        {
+          "command": "new desktop",
+          "description": "Creates a new virtual desktop.",
+          "examples": [
+            {"user_input": "win + ctrl + d", "assistant_output": "new desktop"},
+            {"user_input": "new virtual desktop", "assistant_output": "new desktop"},
+            {"user_input": "new decstop", "assistant_output": "new desktop"},
+            {"user_input": "new vritual desktop", "assistant_output": "new desktop"}
+          ]
+        },
+        {
+          "command": "switch right",
+          "description": "Switches to the next virtual desktop on the right.",
+          "examples": [
+            {"user_input": "switch to right virtual desktop", "assistant_output": "switch right"},
+            {"user_input": "switch to next desktop", "assistant_output": "switch right"},
+            {"user_input": "switch to rt virtual desktop", "assistant_output": "switch right"},
+            {"user_input": "right virtual desktop", "assistant_output": "switch right"}
+          ]
+        },
+        {
+          "command": "switch left",
+          "description": "Switches to the previous virtual desktop on the left.",
+          "examples": [
+            {"user_input": "switch to left virtual desktop", "assistant_output": "switch left"},
+            {"user_input": "switch to previous desktop", "assistant_output": "switch left"},
+            {"user_input": "switch lft virtual desktop", "assistant_output": "switch left"},
+            {"user_input": "switch to left desk", "assistant_output": "switch left"}
+          ]
+        },
+        {
+          "command": "close desktop",
+          "description": "Closes the current virtual desktop.",
+          "examples": [
+            {"user_input": "win + ctrl + f4", "assistant_output": "close desktop"},
+            {"user_input": "close virtual desktop", "assistant_output": "close desktop"},
+            {"user_input": "close dektop", "assistant_output": "close desktop"},
+            {"user_input": "close desk", "assistant_output": "close desktop"}
+          ]
+        },
+        {
+          "command": "volume down",
+          "description": "Decreases the system volume.",
+          "examples": [
+            {"user_input": "ctrl + down", "assistant_output": "volume down"},
+            {"user_input": "decrease volume", "assistant_output": "volume down"},
+            {"user_input": "volume dn", "assistant_output": "volume down"},
+            {"user_input": "volume low", "assistant_output": "volume down"}
+          ]
+        },
+        {
+          "command": "volume up",
+          "description": "Increases the system volume.",
+          "examples": [
+            {"user_input": "ctrl + up", "assistant_output": "volume up"},
+            {"user_input": "increase volume", "assistant_output": "volume up"},
+            {"user_input": "volume up", "assistant_output": "volume up"},
+            {"user_input": "volmue up", "assistant_output": "volume up"}
+          ]
+        },
+        {
+          "command": "brightness up",
+          "description": "Increases the screen brightness.",
+          "examples": [
+            {"user_input": "ctrl + up", "assistant_output": "brightness up"},
+            {"user_input": "increase brightness", "assistant_output": "brightness up"},
+            {"user_input": "brightness up", "assistant_output": "brightness up"},
+            {"user_input": "brigtness up", "assistant_output": "brightness up"}
+          ]
+        },
+        {
+          "command": "brightness down",
+          "description": "Decreases the screen brightness.",
+          "examples": [
+            {"user_input": "ctrl + down", "assistant_output": "brightness down"},
+            {"user_input": "decrease brightness", "assistant_output": "brightness down"},
+            {"user_input": "brightness dwn", "assistant_output": "brightness down"},
+            {"user_input": "brightness low", "assistant_output": "brightness down"}
+          ]
+        },
+        {
+          "command": "bottom right",
+          "description": "Toggles various system functions in the bottom right corner.",
+          "examples": [
+            {"user_input": "toggle Airplane Mode", "assistant_output": "bottom right"},
+            {"user_input": "toggle Bluetooth", "assistant_output": "bottom right"},
+            {"user_input": "toggle Wi-Fi", "assistant_output": "bottom right"},
+            {"user_input": "toggle Mobile Hotspot", "assistant_output": "bottom right"}
+          ]
+        }
+      ]
     }
+    
     ,
     {
       "description": "Handles document generation requests intelligently. If the user asks for a PDF or DOCX with specific content, return the formatted response accordingly.",

@@ -3,7 +3,7 @@ from PyQt5 import QtCore,  QtWidgets
 import sys,os,time
 import database as db
 from  CustomMessageBox import CustomMessageBox
-
+print("login")
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if os.path.exists("user_config.txt"):

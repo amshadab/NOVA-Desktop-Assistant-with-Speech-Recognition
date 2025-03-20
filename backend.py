@@ -9,6 +9,7 @@ import pywhatkit as kit
 import pygetwindow as gw
 import aiprocess as ap
 import AppOpener
+import markdown
 # import gemini_ai
 import os
 from docx import Document
@@ -24,12 +25,14 @@ import psutil
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL
 from ctypes import cast, POINTER
+print("backend....")
+
 mic_off=False
 obj=None
 msg = None
 engine = pyttsx3.init("sapi5")
 commands = ["open", "shutdown", "ip address of my device", "minimise window","close window","maximise window","go to","search on google","search on wikipedia",
-            "current temperature","send message","sleep","current date","restart","play video on youtube","help","close","send message","battery","current time","Incomplete","mute","unmute","exit","user","type","theme","pdf","docx"]
+            "current temperature","send message","sleep","current date","restart","play video on youtube","help","close","send message","battery","current time","Incomplete","mute","unmute","exit","user","type","theme","pdf","docx","cut","copy","paste","undo","open clipboard","save","new tab","alt tab","select all","close tab","minimise all","show desktop","find","new window","start","notification","new desktop","switch right","switch left","close desktop","volume up","volume down","brightness up","brightness down","bottom right"]
 # Text to speak function
 def set_speech_rate(rate):
     engine.setProperty('rate', rate)
@@ -47,6 +50,20 @@ def speak(text,speed=200):
     # engine.say(text)
     # engine.runAndWait()
 
+def convert_markdown_to_html(text):
+    # Convert markdown to HTML using the markdown library with additional extensions
+    extensions = [
+        'extra',        # Enables additional Markdown features like tables and footnotes
+        'codehilite',   # Adds syntax highlighting for code blocks
+        'toc',          # Generates a Table of Contents based on headings
+        'nl2br',        # Converts newlines to <br> for better text formatting
+        'sane_lists',   # Ensures consistent list formatting
+        'fenced_code',  # Enables triple-backtick code blocks
+        'admonition'    # Supports note/warning/info boxes
+    ]
+    
+    html = markdown.markdown(text, extensions=extensions)
+    return html
 
 # Voice to text
 def takecmd():
@@ -100,6 +117,106 @@ def wish():
     else:
         speak("Good Evening")
 
+
+
+def copy():
+    pyautogui.hotkey('ctrl', 'c')
+    return "Successfully copied to clipboard."
+
+def paste():
+    pyautogui.hotkey('ctrl', 'v')
+    return "Successfully pasted from clipboard."
+
+def cut():
+    pyautogui.hotkey('ctrl', 'x')
+    return "Successfully cut to clipboard."
+
+def undo():
+    pyautogui.hotkey('ctrl', 'z')
+    return "Successfully undone the last action."
+
+def open_clipboard():
+    pyautogui.hotkey('win', 'v')
+    return "Successfully opened clipboard history."
+
+def save():
+    pyautogui.hotkey('ctrl', 's')
+    return "Successfully saved the file."
+
+def new_tab():
+    pyautogui.hotkey('ctrl', 't')
+    return "Successfully opened a new tab."
+
+def select_all():
+    pyautogui.hotkey('ctrl', 'a')
+    return "Successfully selected all text/items."
+
+def close_tab():
+    pyautogui.hotkey('ctrl', 'w')
+    return "Successfully closed the tab."
+
+def alt_tab():
+    pyautogui.hotkey('alt', 'tab')
+    return "Successfully switched to the next window."
+
+def show_desktop():
+    pyautogui.hotkey('win', 'd')
+    return "Successfully minimized all windows and showed the desktop."
+
+def minimize_all():
+    pyautogui.hotkey('win', 'm')
+    return "Successfully minimized all windows."
+
+def find():
+    pyautogui.hotkey('ctrl', 'f')
+    return "Successfully opened the Find/Search dialog."
+
+def new_window():
+    pyautogui.hotkey('ctrl', 'n')
+    return "Successfully opened a new window."
+
+def open_start():
+    pyautogui.press('win')
+    return "Successfully opened the Start menu."
+
+def notifications():
+    pyautogui.hotkey('win', 'n')
+    return "Successfully opened the notifications panel."
+
+def new_virtual_desktop():
+    pyautogui.hotkey('ctrl', 'win', 'd')
+    return "Successfully created a new virtual desktop."
+
+def switch_virtual_desktop_right():
+    pyautogui.hotkey('ctrl', 'win', 'right')
+    return "Successfully switched to the next virtual desktop."
+def switch_virtual_desktop_left():
+    pyautogui.hotkey('ctrl', 'win', 'left')
+    return "Successfully switched to the previous virtual desktop."
+
+def close_virtual_desktop():
+    pyautogui.hotkey('ctrl', 'win', 'f4')
+    return "Successfully closed the current virtual desktop."
+
+def volume_up():
+    pyautogui.press('volumeup')
+    return "Successfully increased the volume."
+
+def volume_down():
+    pyautogui.press('volumedown')
+    return "Successfully decreased the volume."
+
+def brightness_up():
+    pyautogui.press('brightnessup')
+    return "Successfully increased the brightness."
+
+def brightness_down():
+    pyautogui.press('brightnessdown')
+    return "Successfully decreased the brightness."
+
+def bottom_right():
+    pyautogui.hotkey('win', 'a')
+    return "Successfully opened the Action Center (from here you can toggle airplane mode)."
 
 def wiki(query):
     
@@ -531,6 +648,31 @@ command_actions={
     "theme":toggle_theme,
     "type":write_anything,
     "pdf":generate_pdf,
+    "cut":cut,
+    "copy":copy,
+    "paste":paste,
+    "undo":undo,
+    "clipboard":open_clipboard,
+    "save":save,
+    "new tab":new_tab,
+    "alt tab":alt_tab,
+    "select all":select_all,
+    "close tab":close_tab,
+    "minimise all":minimize_all,
+    "show desktop":show_desktop,
+    "find":find,
+    "new window":new_window,
+    "start":open_start,
+    "notification":notifications,
+    "new desktop":new_virtual_desktop,
+    "switch left":switch_virtual_desktop_left,
+    "switch right":switch_virtual_desktop_right,
+    "close desktop":close_virtual_desktop,
+    "volume up":volume_up,
+    "volume down":volume_down,
+    "brightness up":brightness_up,
+    "brightness down":brightness_down,
+    "bottom right":bottom_right,
     "docx":generate_docx,
     "Incomplete":incomplete_command,
     "exit":exit_fucntion
