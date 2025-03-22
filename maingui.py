@@ -7,6 +7,7 @@ from PyQt5 import QtGui
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL
 import ctypes
+import html
 from CustomMessageBox import *
 from backend import *
 import backend as b
@@ -89,11 +90,14 @@ class PopupWindow(QWidget):
         self.main_window.show_main_interface()
 
 def format_code_for_qlabel(code):
-    """ Converts code to an HTML-friendly format while preserving tabs and indentation. """
-    html_code = code.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")  # Replace tabs with spaces
-    html_code = html_code.replace(" ", "&nbsp;")  # Preserve spaces
-    html_code = html_code.replace("\n", "<br>")  # Preserve new lines
-    return f"<pre><code>{html_code}</code></pre>"
+    if "<!DOCTYPE html>" not in code:
+        """ Converts code to an HTML-friendly format while preserving tabs and indentation. """
+        html_code = code.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")  # Replace tabs with spaces
+        html_code = html_code.replace(" ", "&nbsp;")  # Preserve spaces
+        html_code = html_code.replace("\n", "<br>")  # Preserve new lines
+        return f"<editor>{html_code}</editor>"
+    else:
+        return html.escape(code)  # Escape HTML characters in code block
 
 def convert_markdown_to_html(text):
     # Convert markdown to HTML using the markdown library with additional extensions
@@ -141,6 +145,16 @@ def convert_markdown_to_html(text):
             }}
             code {{
                 color: {themeColor};
+                padding: 2px 5px;
+                border-radius: 3px;
+                font-family: monospace;
+                background-color: #1A2638;
+                border-radius: 10px;
+                padding: 10px;
+                font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            }}
+            editor {{
+                color: white;
                 padding: 2px 5px;
                 border-radius: 3px;
                 font-family: monospace;
@@ -216,7 +230,8 @@ class ChatWindow(QWidget, QThread):
         self.scroll_area.setStyleSheet("""
             QScrollArea {
                     background-color: #0F1C25;
-            border: none;
+                    border: none;
+                    padding-left: 30px;
             }
             QScrollBar:vertical {
                 border: none;
@@ -523,7 +538,7 @@ class NovaInterface(QWidget):
         self.mic_button.clicked.connect(self.micon)
         self.mic_button.setStyleSheet("border: none;")
         
-        control_size = 50 #control buttons size
+        control_size = 40 #control buttons size
 
         #button for text mode
         self.text_mode_button = QPushButton()
@@ -672,7 +687,7 @@ class NovaInterface(QWidget):
 
     def create_mic_button(self):
         global movie
-        mic_size = 150
+        mic_size = 100
         mic_button = QPushButton(self)
         mic_button.setFixedSize(mic_size , mic_size)
         mic_label = QLabel(mic_button)
@@ -992,7 +1007,7 @@ class ChatThread(QThread):
 def thread_function(obj):
     chat_thread.start()          
 
-if __name__ == '__main__':
+if __name__ == '__main__' and os.path.exists("user_config.txt"):
     try:
         app = QApplication(sys.argv)    
         ex = NovaInterface()
@@ -1010,3 +1025,8 @@ if __name__ == '__main__':
         sys.exit(app.exec_())
     except Exception as e:
         print(e)
+elif not os.path.exists("user_config.txt"):
+    if(os.path.exists("signup_login.exe")):
+                os.system("signup_login.exe")
+    else:            
+            os.system("python signup_login.py")      

@@ -1,6 +1,5 @@
 .venv
 venv
-__pycache__
 *.pyc
 tempCodeRunnerFile.py
 PyWhatKit_DB.txt
@@ -15,3 +14,4 @@ tp.py
 tp2.py
 user_config.txt
 gemini_ai.py
+__pycache__

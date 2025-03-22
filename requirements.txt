@@ -17,3 +17,4 @@ FPDF
 python-docx
 PyQtWebEngine
 keyboard
+tk

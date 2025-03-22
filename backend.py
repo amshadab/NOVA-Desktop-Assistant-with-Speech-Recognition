@@ -22,6 +22,7 @@ import datetime
 from database import *
 import sys
 import psutil
+from tkinter import filedialog, Tk
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL
 from ctypes import cast, POINTER
@@ -50,20 +51,8 @@ def speak(text,speed=200):
     # engine.say(text)
     # engine.runAndWait()
 
-def convert_markdown_to_html(text):
-    # Convert markdown to HTML using the markdown library with additional extensions
-    extensions = [
-        'extra',        # Enables additional Markdown features like tables and footnotes
-        'codehilite',   # Adds syntax highlighting for code blocks
-        'toc',          # Generates a Table of Contents based on headings
-        'nl2br',        # Converts newlines to <br> for better text formatting
-        'sane_lists',   # Ensures consistent list formatting
-        'fenced_code',  # Enables triple-backtick code blocks
-        'admonition'    # Supports note/warning/info boxes
-    ]
-    
-    html = markdown.markdown(text, extensions=extensions)
-    return html
+
+
 
 # Voice to text
 def takecmd():
@@ -553,20 +542,16 @@ def current_date():
     return f"Today's date is {date_str}"
 
 def generate_pdf(content):
-    # Get the Downloads folder path
-    downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+    # Initialize Tkinter root window
+    root = Tk()
+    root.withdraw()  # Hide the Tkinter root window
 
-    # Specify the base filename for the PDF
-    base_filename = "NOVA_generated_pdf"
-    pdf_filename = base_filename + ".pdf"
-    pdf_path = os.path.join(downloads_folder, pdf_filename)
-
-    # Check if file already exists and create a unique filename
-    counter = 1
-    while os.path.exists(pdf_path):
-        pdf_filename = f"{base_filename}({counter}).pdf"
-        pdf_path = os.path.join(downloads_folder, pdf_filename)
-        counter += 1
+    # Ask the user where to save the PDF
+    pdf_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")], title="Save PDF As")
+    
+    # Check if the user canceled the save dialog
+    if not pdf_path:
+        return "PDF generation was canceled."
 
     # Create PDF instance
     pdf = FPDF()
@@ -579,10 +564,11 @@ def generate_pdf(content):
     # Add content to the PDF
     pdf.multi_cell(0, 10, content)
 
-    # Output the PDF to the Downloads folder
+    # Output the PDF to the chosen path
     pdf.output(pdf_path)
     
-    if os.name == 'nt': 
+    # Open the PDF if on Windows
+    if os.name == 'nt':
         os.startfile(pdf_path)
 
     return f"PDF generated successfully: {pdf_path}"
@@ -590,29 +576,26 @@ def generate_pdf(content):
 
 
 def generate_docx(content):
-    # Get the Downloads folder path
-    downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
+    # Initialize Tkinter root window
+    root = Tk()
+    root.withdraw()  # Hide the Tkinter root window
 
-    # Specify the base filename for the DOCX
-    base_filename = "NOVA_generated_docx"
-    docx_filename = base_filename + ".docx"
-    docx_path = os.path.join(downloads_folder, docx_filename)
-
-    # Check if file already exists and create a unique filename
-    counter = 1
-    while os.path.exists(docx_path):
-        docx_filename = f"{base_filename}({counter}).docx"
-        docx_path = os.path.join(downloads_folder, docx_filename)
-        counter += 1
+    # Ask the user where to save the DOCX
+    docx_path = filedialog.asksaveasfilename(defaultextension=".docx", filetypes=[("Word documents", "*.docx")], title="Save DOCX As")
+    
+    # Check if the user canceled the save dialog
+    if not docx_path:
+        return "DOCX generation was canceled."
 
     # Create a new Word document
     doc = Document()
     doc.add_paragraph(content)
 
-    # Save the document
+    # Save the document to the chosen path
     doc.save(docx_path)
-    
-    if os.name == 'nt': 
+
+    # Open the DOCX if on Windows
+    if os.name == 'nt':
         os.startfile(docx_path)
 
     return f"DOCX generated successfully: {docx_path}"

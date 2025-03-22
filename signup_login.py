@@ -2,10 +2,13 @@ import webbrowser
 from PyQt5 import QtCore,  QtWidgets
 import sys,os,time
 import database as db
+from PyQt5.QtGui import QIcon
 from  CustomMessageBox import CustomMessageBox
 print("login")
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        MainWindow.setWindowIcon(QIcon('icons/nova_no_bg.png'))
+
         if os.path.exists("user_config.txt"):
             self.open_main()       
             
@@ -322,7 +325,7 @@ Hello,  You're now connected to NOVA. Let's get things done effortlessly.
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle("NOVA")
         
         # Sign Up Page
         self.lineEdit_first_name.setPlaceholderText(_translate("MainWindow", "First Name"))
