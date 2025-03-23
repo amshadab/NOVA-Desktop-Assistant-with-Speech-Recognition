@@ -8,6 +8,7 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL
 import ctypes
 import html
+import markdown
 from CustomMessageBox import *
 from backend import *
 import backend as b
