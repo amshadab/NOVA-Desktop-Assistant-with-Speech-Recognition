@@ -393,7 +393,158 @@ def help_function():
         "    - Example: 'No thanks exit'\n"
         "    - Exits the assistant.\n\n"
         
-        "If you need help with a specific command or have any questions, just ask!"
+        "19. **Type <text> or Generate type <text>**\\n"
+"   - Example: 'Type Hello coders' or 'Write Good morning, everyone!'\\n"
+"   - Types exactly what you specify or generates and types intelligent responses based on your query.\\n\\n"
+"   - Example: 'Generate type: What is Python?'\\n"
+"   - Generates a response and types it, e.g., 'type Python is a high-level programming language known for its simplicity and readability.'\\n\\n"
+
+        "20. **Change Theme <dark/light>**\\n"
+"    - Example: 'turn on dark theme' or 'switch to light theme'\\n"
+"    - Switches the theme of the system between dark and light modes, based on the user's input.\\n\\n"
+"    - Example: 'set theme to dark'\\n"
+"    - Example: 'change to light mode'\\n\\n"
+
+"21. **PDF <content> or generate PDF <topic>**\\n"
+"    - Example: 'generate a PDF with this content: Hello World in Python'\\n"
+"    - Generates a PDF with the provided content. If the user requests AI-generated content, the assistant will analyze the request, generate the most relevant response, and return it in a 'pdf <response>' format.\\n\\n"
+"    - Example: 'I want Hello World code in Python in PDF'\\n"
+"    - Example: 'create a PDF for How to use a function in Python'\\n"
+"    - Example: 'generate pdf What is Python?'\\n"
+"    - Example: 'generate pdf How do I create a class in Python?'\\n\\n"
+
+"22. **DOCX <content> or generate DOCX <topic>**\\n"
+"    - Example: 'generate a DOCX with this content: Hello World in Python'\\n"
+"    - Generates a DOCX file only if the user explicitly requests it. If the user provides content, it will return in the format 'docx <user_content>'. If AI-generated content is requested, it will return in the format 'docx <generated_response>'.\\n"
+"    - If no explicit DOCX request is made, the assistant processes the query normally without DOCX prefix.\\n\\n"
+"    - Example: 'I want Hello World code in Python in DOCX'\\n"
+"    - Example: 'create a DOCX for How to use a function in Python'\\n"
+"    - Example: 'generate docx How does a for loop work in Python?'\\n"
+"    - Example: 'generate docx What are Python data types?'\\n"
+"    - Example: 'generate docx How do I create a class in Python?'\\n\\n"
+
+
+"23. **COPY**\n"
+    "    - Example: 'ctrl + c'\n"
+    "    - Copies the selected text.\n\n"
+   
+    
+    "24. **PASTE**\n"
+    "    - Example: 'ctrl + v'\n"
+    "    - Pastes the copied text.\n\n"
+   
+    "25. **CUT**\n"
+    "    - Example: 'ctrl + x'\n"
+    "    - Cuts the selected text.\n\n"
+   
+    "26. **UNDO**\n"
+    "    - Example: 'ctrl + z'\n"
+    "    - Undoes the last action.\n\n"
+   
+    
+    "27. **OPEN CLIPBOARD**\n"
+    "    - Example: 'win + v'\n"
+    "    - Opens the clipboard.\n\n"
+    
+    
+    "28. **SAVE**\n"
+    "    - Example: 'ctrl + s'\n"
+    "    - Saves the document.\n\n"
+
+    
+    "29. **NEW TAB**\n"
+    "    - Example: 'ctrl + t'\n"
+    "    - Opens a new tab in the browser.\n\n"
+  
+    
+    "30. **SELECT ALL**\n"
+    "    - Example: 'ctrl + a'\n"
+    "    - Selects all text or items.\n\n"
+ 
+    
+    "31. **CLOSE TAB**\n"
+    "    - Example: 'ctrl + w'\n"
+    "    - Closes the current tab.\n\n"
+
+    
+    "32. **ALT TAB**\n"
+    "    - Example: 'alt + tab'\n"
+    "    - Switches between open applications.\n\n"
+
+    
+    "33. **SHOW DESKTOP**\n"
+    "    - Example: 'show desktop'\n"
+    "    - Minimizes all windows to show the desktop.\n\n"
+    
+    
+    "34. **MINIMIZE ALL**\n"
+    "    - Example: 'minimize all'\n"
+    "    - Minimizes all windows.\n\n"
+   
+    
+    "35. **FIND**\n"
+    "    - Example: 'ctrl + f'\n"
+    "    - Finds text within a document or webpage.\n\n"
+   
+    
+    "36. **NEW WINDOW**\n"
+    "    - Example: 'ctrl + n'\n"
+    "    - Opens a new window.\n\n"
+
+    
+    "37. **START**\n"
+    "    - Example: 'click on start'\n"
+    "    - Opens the start menu.\n\n"
+    
+    
+    "38. **NOTIFICATION**\n"
+    "    - Example: 'win + n'\n"
+    "    - Opens the notification center.\n\n"
+   
+    
+    "39. **NEW DESKTOP**\n"
+    "    - Example: 'win + ctrl + d'\n"
+    "    - Creates a new virtual desktop.\n\n"
+    
+    
+    "40. **SWITCH RIGHT**\n"
+    "    - Example: 'switch to right virtual desktop'\n"
+    "    - Switches to the next virtual desktop on the right.\n\n"
+   
+    
+    "41. **SWITCH LEFT**\n"
+    "    - Example: 'switch to left virtual desktop'\n"
+    "    - Switches to the previous virtual desktop on the left.\n\n"
+    
+    "42. **CLOSE DESKTOP**\n"
+    "    - Example: 'win + ctrl + f4'\n"
+    "    - Closes the current virtual desktop.\n\n"
+    
+    
+    "43. **VOLUME DOWN**\n"
+    "    - Example: 'ctrl + down'\n"
+    "    - Decreases the system volume.\n\n"
+    
+    
+    "44. **VOLUME UP**\n"
+    "    - Example: 'ctrl + up'\n"
+    "    - Increases the system volume.\n\n"
+   
+    "45. **BRIGHTNESS UP**\n"
+    "    - Example: 'ctrl + up'\n"
+    "    - Increases the screen brightness.\n\n"
+  
+    
+    "46. **BRIGHTNESS DOWN**\n"
+    "    - Example: 'ctrl + down'\n"
+    "    - Decreases the screen brightness.\n\n"
+
+    
+    "47. **BOTTOM RIGHT**\n"
+    "    - Example: 'toggle Airplane Mode'\n"
+    "    - Toggles various system functions in the bottom right corner.\n\n"
+ 
+
     )
     return help_text
     
