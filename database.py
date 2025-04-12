@@ -186,37 +186,16 @@ def get_conversations():
         else:
             return conversations
         
-        # for conv in conversations:
-        #     # Get the encrypted data as a string
-        #     encrypted_user_input = conv.to_dict().get('user_input')
-        #     encrypted_assistant_response = conv.to_dict().get('assistant_response')
-
-        #     print(f"Encrypted User Input: {encrypted_user_input}")
-        #     print(f"Encrypted Assistant Response: {encrypted_assistant_response}")
-
-        #     try:
-        #         # Decrypt the data
-        #         user_input = decrypt_data(encrypted_user_input.encode('utf-8')) if isinstance(encrypted_user_input, str) else decrypt_data(encrypted_user_input)
-        #         assistant_response = decrypt_data(encrypted_assistant_response.encode('utf-8')) if isinstance(encrypted_assistant_response, str) else decrypt_data(encrypted_assistant_response)
-                
-        #         print(f"User Input: {user_input}")
-        #         print(f"Assistant Response: {assistant_response}")
-        #         print(f"Timestamp: {conv.to_dict().get('timestamp')}")
-        #         print("-" * 20)
-        #         return {user_input,assistant_response}
-        #     except Exception as decryption_error:
-        #         print(f"Decryption error for conversation ID {conv.id}: {decryption_error}")
+        
 
     except Exception as e:
         print(f"Error retrieving conversations: {e}")
         traceback.print_exc()
 
-  # This will print the full traceback of the error
 
 
 
-# You can save the key in a secure place (for example, a file or environment variable)
-# Saving the key in a file
+
 
 # Encrypt function using the single key
 def encrypt_data(message):
@@ -233,14 +212,7 @@ def decrypt_data(encrypted_message):
     decrypted_message = cipher.decrypt(encrypted_message).decode()
     return decrypted_message
 
-# Example Usage:
-# Sign up a new user
-# sign_up("neser@example.com", "strongpassword123", "John", "Doe", "Male")
 
-# Log in the user
-# log_in("shady@gmail.com", "Shadab@1234")
-# save_conversation("this","i m kknoo")
-# get_conversations()
 def get_username():
     try:
         # Read the user ID from the user_config.txt file
@@ -339,14 +311,7 @@ def get_last_five_conversations():
 
     return last_five_conversations_reversed
 
-# def get_user_id_from_config():
-#     """Reads the user ID from user_config.txt"""
-#     try:
-#         with open("user_config.txt", "r") as file:
-#             user_id = file.read().strip()
-#         return user_id
-#     except FileNotFoundError:
-#         return None  # Return None instead of printing
+
 
 def delete_conversation():
     """Deletes the user's conversation from Firestore and returns status message."""
