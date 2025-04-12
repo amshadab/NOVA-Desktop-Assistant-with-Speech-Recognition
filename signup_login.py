@@ -5,21 +5,24 @@ import database as db
 from PyQt5.QtGui import QIcon
 from  CustomMessageBox import CustomMessageBox
 print("login")
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setWindowIcon(QIcon('icons/nova_no_bg.png'))
+class Ui_self(QtWidgets.QMainWindow):
+    def __init__(self):
+         super(Ui_self, self).__init__()
+         self.setupUi()
+    def setupUi(self):
+        self.setWindowIcon(QIcon('icons/nova_no_bg.png'))
 
         if os.path.exists("user_config.txt"):
             self.open_main()       
             
 
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(900, 650)
-        MainWindow.setMinimumSize(QtCore.QSize(900, 650))
-        MainWindow.setMaximumSize(QtCore.QSize(900, 650))
-        MainWindow.setStyleSheet("background-color:#0F1C25;\n")
+        self.setObjectName("self")
+        self.resize(900, 650)
+        self.setMinimumSize(QtCore.QSize(900, 650))
+        self.setMaximumSize(QtCore.QSize(900, 650))
+        self.setStyleSheet("background-color:#0F1C25;\n")
         
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         
         # Stack of pages
@@ -42,13 +45,13 @@ class Ui_MainWindow(object):
         # Initial Page
         self.stackedWidget.setCurrentWidget(self.page_signup)
         
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        self.setStatusBar(self.statusbar)
         
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
         
         # Event Listeners
         self.pushButton_signup.clicked.connect(self.signup)
@@ -323,29 +326,29 @@ Hello,  You're now connected to NOVA. Let's get things done effortlessly.
     def gotoLoginPage(self, event):
         self.stackedWidget.setCurrentWidget(self.page_login)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle("NOVA")
+        self.setWindowTitle("NOVA")
         
         # Sign Up Page
-        self.lineEdit_first_name.setPlaceholderText(_translate("MainWindow", "First Name"))
-        self.lineEdit_last_name.setPlaceholderText(_translate("MainWindow", "Last Name"))
-        self.lineEdit_Email.setPlaceholderText(_translate("MainWindow", "Email"))
-        self.lineEdit_password.setPlaceholderText(_translate("MainWindow", "Password"))
-        self.lineEdit_confirm_password.setPlaceholderText(_translate("MainWindow", "Confirm Password"))
-        self.pushButton_signup.setText(_translate("MainWindow", "SIGN UP"))
-        self.radioButton_male.setText(_translate("MainWindow", "Male"))
-        self.radioButton_female.setText(_translate("MainWindow", "Female"))
-        self.label_goto_login.setText(_translate("MainWindow", "Already have an account?"))
+        self.lineEdit_first_name.setPlaceholderText(_translate("self", "First Name"))
+        self.lineEdit_last_name.setPlaceholderText(_translate("self", "Last Name"))
+        self.lineEdit_Email.setPlaceholderText(_translate("self", "Email"))
+        self.lineEdit_password.setPlaceholderText(_translate("self", "Password"))
+        self.lineEdit_confirm_password.setPlaceholderText(_translate("self", "Confirm Password"))
+        self.pushButton_signup.setText(_translate("self", "SIGN UP"))
+        self.radioButton_male.setText(_translate("self", "Male"))
+        self.radioButton_female.setText(_translate("self", "Female"))
+        self.label_goto_login.setText(_translate("self", "Already have an account?"))
         
         # Login Page
-        self.lineEdit_login_Email.setPlaceholderText(_translate("MainWindow", "Email"))
-        self.lineEdit_login_password.setPlaceholderText(_translate("MainWindow", "Password"))
-        self.pushButton_login_page.setText(_translate("MainWindow", "LOGIN"))
-        self.label_goto_signup.setText(_translate("MainWindow", "Don't have an account?"))
+        self.lineEdit_login_Email.setPlaceholderText(_translate("self", "Email"))
+        self.lineEdit_login_password.setPlaceholderText(_translate("self", "Password"))
+        self.pushButton_login_page.setText(_translate("self", "LOGIN"))
+        self.label_goto_signup.setText(_translate("self", "Don't have an account?"))
 
     def open_main(self):
-        MainWindow.close()
+        self.close()
                    
         if(os.path.exists("maingui.exe")):
                         os.system("maingui.exe")
@@ -354,8 +357,6 @@ Hello,  You're now connected to NOVA. Let's get things done effortlessly.
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    ui = Ui_self()
+    ui.show()
     sys.exit(app.exec_())
