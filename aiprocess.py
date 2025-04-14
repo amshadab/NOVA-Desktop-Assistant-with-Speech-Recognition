@@ -49,7 +49,7 @@ commands_list = [
     "volume up",
     "brightness up",
     "brightness down",
-    "bottom right"
+    "bottom right",
     "restart",
     "sleep",
     "user",
