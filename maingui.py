@@ -786,7 +786,7 @@ class NovaInterface(QWidget):
         now = datetime.now()
         country_code = "+91"
         number = f"{country_code}{number}"
-        threading.Thread(target=kit.sendwhatmsg, args=(number, message + "\n", now.hour, now.minute + 1)).start()
+        threading.Thread(target=kit.sendwhatmsg_instantly, args=(number, message)).start()
         self.chat_window.add_message("Message sent to " + number + "\nwill be delivered in a minute")
         time.sleep(1)
 
