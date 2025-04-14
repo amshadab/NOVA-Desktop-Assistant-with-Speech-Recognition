@@ -220,7 +220,7 @@ def brightness_down():
 
 def bottom_right():
     pyautogui.hotkey('win', 'a')
-    return "Successfully opened the Action Center (from here you can toggle airplane mode)."
+    return "Successfully opened the Action Center."
 
 def wiki(query):
     
@@ -271,7 +271,15 @@ def send_message(message):
     return f"sending  message {message}"
 
 def incomplete_command(complete_command):
-    return f"The command you provide is incomplete command, the complete {complete_command}"
+    
+    if complete_command.lower().startswith("command:"):
+        complete_command = complete_command[len("command:"):].strip()
+    
+    # Replace < > with { }
+    fixed_command = complete_command.replace('<', '{').replace('>', '}')
+    
+    return f"The command you provided is incomplete. The complete command is: {fixed_command}"
+
 
 def open_apps(app_name):
     # pass

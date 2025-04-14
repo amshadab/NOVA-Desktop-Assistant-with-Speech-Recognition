@@ -99,7 +99,8 @@ def processcmd(command):
     f"- If the user says 'search on wikipedia', 'wikipedia search', or any variation of that command, return 'search on wikipedia <topic>' and extract the topic from the command.\n"
     f"- If the user only types 'AI' instead of 'AI mode', assume they meant 'AI mode'.\n"
     f"- The user might give incomplete commands. For example, 'go to google' should be interpreted as a web search, while 'search on google' should include a query if missing.\n"
-    f"- If the user gives an incomplete command, such as 'open app' without specifying the app, respond with 'Incomplete command: open <app_name>'. This will guide the user towards the correct format.\n"
+    f"- If the user gives an incomplete command, such as 'open app' without specifying the app, respond with 'Incomplete command'. This will guide the user towards the correct format. Use the following commands for reference: {commands_list}\n"
+
     f"- If the user says anything resembling 'help', such as 'run help function', 'show help', 'assist', or 'guide', return the 'help' command.\n"
     f"- If the user says anything resembling 'exit', 'no thanks', 'close', or any phrase indicating the intent to stop or exit the software, return 'exit'.\n"
     f"- If the user asks a question related to any domain or field, interpret the question and provide a relevant answer in 200 words or more, returning it in the format: 'AI mode: <answer>'.\n\n"
@@ -116,7 +117,8 @@ def processcmd(command):
     f"Response:\n"
     f"- If the user wants to open a website and says something like 'go to <website_name>' or 'open <website_name>', return 'go to <website_name>.com'.\n"
     f"- For apps, return 'open <app_name>' or 'close <app_name>' if the app exists in {app_keys}, or inform the user that the app is not available if it's not in {app_keys}.\n"
-    f"- If the command is incomplete, return 'Incomplete command: <correct_command>'.\n"
+    f"- If the command is incomplete, return 'Incomplete command: <correct_command>'. Do not include anything else.\n"
+
     f"- If the user asks a question related to any domain or field, interpret the question and return 'AI mode: <answer>'."
     f"- If the user asks to change or switch themes, return theme"
     f"- If the user asks to generate a PDF with provided content, return 'pdf <user_content>'.\n"
@@ -133,7 +135,10 @@ def processcmd(command):
     f"- If the user asks to paste text or mentions 'ctrl + v', 'paste', or similar commands, return 'paste'.\n"
     f"- If the user asks to cut text or mentions 'ctrl + x', 'cut', or similar commands, return 'cut'.\n"
     f"- If the user asks to undo an action or mentions 'ctrl + z', 'undo', or similar commands, return 'undo'.\n"
-    f"- If the user wants to open the clipboard or mentions commands like 'win + v', 'clipboard', or anything similar, return only the word 'clipboard'. Do not return phrases like 'open clipboard' or treat it as an app.\n"
+  f"- When the user says anything that contains the word 'clipboard', including phrases like 'open clipboard', 'show clipboard', or 'win + v', your response must be exactly: clipboard (in all lowercase, with no additional words or explanation). Never respond with phrases like 'open clipboard' or treat 'clipboard' as an app. Just return the single word: clipboard.\n"
+
+
+
     f"- If the user asks to save the document or mentions 'ctrl + s', 'save', or similar commands, return 'save'.\n"
     f"- If the user asks to open a new tab or mentions 'ctrl + t', 'new tab', or similar commands, return 'new tab'.\n"
     f"- If the user asks to select all text or mentions 'ctrl + a', 'select all', or similar commands, return 'select all'.\n"
@@ -163,7 +168,7 @@ def processcmd(command):
 
 
     f"- If the user asks about themselves, return 'user'\n"
-    f"- If the command is incomplete or not recognized, generate a response yourself and return it.\n"
+   f"- If the command is incomplete or not recognized, generate a response yourself and return it in the format 'Incomplete command: [correct_command]'.\n"
     f"- If the user refers to something from previous messages, use the context from past interactions in {previous_chats}.\n"
     f"- Maintain a conversational flow and answer accordingly."
         )
