@@ -19,3 +19,4 @@ PyQtWebEngine
 keyboard
 tk
 uiautomation
+wmi

@@ -25,6 +25,31 @@ commands_list = [
     "current date",
     "ai mode <query>",
     "shutdown",
+    "copy",
+    "paste",
+    "cut",
+    "undo",
+    "open clipboard",
+    "save",
+    "new tab",
+    "select all",
+    "close tab",
+    "alt tab",
+    "show desktop",
+    "minimize all",
+    "find",
+    "new window",
+    "start",
+    "notification",
+    "new desktop",
+    "switch right",
+    "switch left",
+    "close desktop",
+    "volume down",
+    "volume up",
+    "brightness up",
+    "brightness down",
+    "bottom right"
     "restart",
     "sleep",
     "user",
@@ -108,7 +133,7 @@ def processcmd(command):
     f"- If the user asks to paste text or mentions 'ctrl + v', 'paste', or similar commands, return 'paste'.\n"
     f"- If the user asks to cut text or mentions 'ctrl + x', 'cut', or similar commands, return 'cut'.\n"
     f"- If the user asks to undo an action or mentions 'ctrl + z', 'undo', or similar commands, return 'undo'.\n"
-    f"- If the user asks to open the clipboard or mentions 'win + v', 'clipboard', or similar commands, return 'open clipboard'.\n"
+    f"- If the user wants to open the clipboard or mentions commands like 'win + v', 'clipboard', or anything similar, return only the word 'clipboard'. Do not return phrases like 'open clipboard' or treat it as an app.\n"
     f"- If the user asks to save the document or mentions 'ctrl + s', 'save', or similar commands, return 'save'.\n"
     f"- If the user asks to open a new tab or mentions 'ctrl + t', 'new tab', or similar commands, return 'new tab'.\n"
     f"- If the user asks to select all text or mentions 'ctrl + a', 'select all', or similar commands, return 'select all'.\n"
@@ -123,7 +148,7 @@ def processcmd(command):
     f"- If the user asks to create a new virtual desktop or mentions 'new virtual desktop', 'win + ctrl + d', or similar commands, return 'new desktop'.\n"
     f"- If the user asks to switch to the virtual desktop on the right or mentions 'switch to right virtual desktop', 'switch to next desktop', or similar commands, return 'switch right'.\n"
     f"- If the user asks to switch to the virtual desktop on the left or mentions 'switch to left virtual desktop', 'switch to previous desktop', or similar commands, return 'switch left'.\n"
-    f"- If the user asks to close a desktop or mentions 'close desktop', 'win + ctrl + f4', or similar commands, return 'close desktop'.\n"
+    f"- If the user asks to close a desktop or mentions 'close desktop', 'win + ctrl + f4', or similar commands, return 'desktop close'.\n"
     f"- If the user asks to decrease the volume or mentions 'volume down', 'ctrl + down', or similar commands, return 'volume down'.\n"
     f"- If the user asks to increase the volume or mentions 'volume up', 'ctrl + up', or similar commands, return 'volume up'.\n"
     f"- If the user asks to increase the brightness or mentions 'brightness up', 'ctrl + up', or similar commands, return 'brightness up'.\n"

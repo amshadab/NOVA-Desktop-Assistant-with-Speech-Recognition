@@ -424,10 +424,10 @@
           "command": "open clipboard",
           "description": "Opens the clipboard.",
           "examples": [
-            {"user_input": "win + v", "assistant_output": "open clipboard"},
-            {"user_input": "clipboard", "assistant_output": "open clipboard"},
-            {"user_input": "clipbord", "assistant_output": "open clipboard"},
-            {"user_input": "clipbrd", "assistant_output": "open clipboard"}
+            {"user_input": "win + v", "assistant_output": "clipboard"},
+            {"user_input": "clipboard", "assistant_output": "clipboard"},
+            {"user_input": "clipbord", "assistant_output": "clipboard"},
+            {"user_input": "clipbrd", "assistant_output": "clipboard"}
           ]
         },
         {
@@ -574,10 +574,10 @@
           "command": "close desktop",
           "description": "Closes the current virtual desktop.",
           "examples": [
-            {"user_input": "win + ctrl + f4", "assistant_output": "close desktop"},
-            {"user_input": "close virtual desktop", "assistant_output": "close desktop"},
-            {"user_input": "close dektop", "assistant_output": "close desktop"},
-            {"user_input": "close desk", "assistant_output": "close desktop"}
+            {"user_input": "win + ctrl + f4", "assistant_output": "desktop close"},
+            {"user_input": "close virtual desktop", "assistant_output": "desktop close"},
+            {"user_input": "close dektop", "assistant_output": "desktop close"},
+            {"user_input": "close desk", "assistant_output": "desktop close"}
           ]
         },
         {
