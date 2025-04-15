@@ -776,18 +776,17 @@ class NovaInterface(QWidget):
 
     def send_message(self, message):
         global in_custom_message_box
-        speak("Please provide the phone number to which I should send messages.")
         in_custom_message_box = True
         number = CustomInputBox.show_input_dialog("Please provide the phone number to which I should send messages")
         while len(number) <= 9:
             number = CustomInputBox.show_input_dialog(f"The provided phone number have only {len(number)} digits Please Enter again")
         in_custom_message_box = False
-        speak("This process may take a few seconds")
         now = datetime.now()
         country_code = "+91"
         number = f"{country_code}{number}"
         threading.Thread(target=kit.sendwhatmsg_instantly, args=(number, message)).start()
-        self.chat_window.add_message("Message sent to " + number + "\nwill be delivered in a minute")
+        self.chat_window.add_message("Message "+message+"sent to " + number + "\nwill be delivered in a minute")
+        speak("Message "+message+" sending to " + number + ", \nwill be delivered in a minute")
         time.sleep(1)
 
     
@@ -905,7 +904,10 @@ class ChatThread(QThread):
                     result = "sleeping your computer"
 
                 if result.__contains__("sending  message"):
+                    speak("Please provide the phone number to which I should send messages.")
                     self.send_message.emit(result.replace("sending  message", "", 1))
+                    result = ""
+                    
                 # ------------------------------------------------------------------
 
                 self.message_received.emit(result)
