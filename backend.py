@@ -18,6 +18,7 @@ import time
 import pyautogui
 import subprocess
 import os
+from config import WEATHER_API_KEY
 import io
 import datetime
 from database import *
@@ -249,7 +250,7 @@ def ytvideo(video_name):
         return f"Something went wrong {e}"
 
 def temperature(city):
-    api_key = "32b87d5cde3a4809b7344238251601"  # replace with your actual WeatherAPI key
+    api_key = WEATHER_API_KEY  # replace with your actual WeatherAPI key
     base_url = "http://api.weatherapi.com/v1/current.json"
     
     complete_url = f"{base_url}?key={api_key}&q={city}"
