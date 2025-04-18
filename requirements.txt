@@ -20,4 +20,3 @@ keyboard
 tk
 uiautomation
 wmi
-markdown
