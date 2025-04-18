@@ -67,6 +67,10 @@ class Ui_self(QtWidgets.QMainWindow):
         self.pushButton_signup.clicked.connect(self.signup)
         self.pushButton_login_page.clicked.connect(self.login)
 
+        # Show Password Buttons
+        self.pushButton_show_password.clicked.connect(self.toggle_signup_password)
+        self.pushButton_show_login_password.clicked.connect(self.toggle_login_password)
+
         # Clickable Labels
         self.label_goto_signup.mousePressEvent = self.gotoSignupPage
         self.label_goto_login.mousePressEvent = self.gotoLoginPage
@@ -78,6 +82,7 @@ class Ui_self(QtWidgets.QMainWindow):
         self.lineEdit_password.textChanged.connect(self.onPasswordChanged)
         self.lineEdit_confirm_password.textChanged.connect(self.onPasswordChanged)
         self.lineEdit_login_Email.textChanged.connect(self.onLoginChanged)
+        self.lineEdit_login_password.textChanged.connect(self.onLoginChanged)
 
         # Radio Buttons
         self.radioButton_male.toggled.connect(self.onGenderSelected)
@@ -112,6 +117,24 @@ class Ui_self(QtWidgets.QMainWindow):
         self.lineEdit_password.setStyleSheet("border:no;\nborder-bottom: 3px solid #0085FF;\n font-size: 20px;")
         self.lineEdit_password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit_password.setObjectName("lineEdit_password")
+
+        # Add show password button for signup page
+        self.pushButton_show_password = QtWidgets.QPushButton(self.frame_signup)
+        self.pushButton_show_password.setGeometry(QtCore.QRect(600, 260, 31, 31))
+        self.pushButton_show_password.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                color: #0085FF;
+                border: 1px solid #0085FF;
+                border-radius: 15px;
+            }
+            QPushButton:hover {
+                background-color: #0085FF;
+                color: white;
+            }
+        """)
+        self.pushButton_show_password.setObjectName("pushButton_show_password")
+        self.pushButton_show_password.setText("🔓")
 
         self.lineEdit_confirm_password = QtWidgets.QLineEdit(self.frame_signup)
         self.lineEdit_confirm_password.setGeometry(QtCore.QRect(60, 340, 531, 41))
@@ -152,7 +175,12 @@ class Ui_self(QtWidgets.QMainWindow):
             QPushButton#pushButton_signup:pressed{
                 background-color:#0085FF;
                 color:white;
-            }""")
+            }
+            QPushButton#pushButton_signup:disabled{
+                background-color:gray;
+                color:darkgray;
+            }
+        """)
         self.pushButton_signup.setObjectName("pushButton_signup")
 
         # ---------- Redirect Label ----------
@@ -179,6 +207,24 @@ class Ui_self(QtWidgets.QMainWindow):
         self.lineEdit_login_password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit_login_password.setObjectName("lineEdit_login_password")
 
+        # Add show password button for login page
+        self.pushButton_show_login_password = QtWidgets.QPushButton(self.frame_login)
+        self.pushButton_show_login_password.setGeometry(QtCore.QRect(600, 230, 31, 31))
+        self.pushButton_show_login_password.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                color: #0085FF;
+                border: 1px solid #0085FF;
+                border-radius: 15px;
+            }
+            QPushButton:hover {
+                background-color: #0085FF;
+                color: white;
+            }
+        """)
+        self.pushButton_show_login_password.setObjectName("pushButton_show_login_password")
+        self.pushButton_show_login_password.setText("🔓")
+
         self.label_warning_login = QtWidgets.QLabel(self.frame_login)
         self.label_warning_login.setGeometry(QtCore.QRect(60, 290, 400, 20))
         self.label_warning_login.setStyleSheet("border:no;\ncolor:red;\n font-size: 15px;")
@@ -198,13 +244,37 @@ class Ui_self(QtWidgets.QMainWindow):
             QPushButton#pushButton_login_page:pressed{
                 background-color:#0085FF;
                 color:white;
-            }""")
+            }
+            QPushButton#pushButton_login_page:disabled{
+                background-color:gray;
+                color:darkgray;
+            }
+        """)
         self.pushButton_login_page.setObjectName("pushButton_login_page")
 
         self.label_goto_signup = QtWidgets.QLabel(self.frame_login)
         self.label_goto_signup.setGeometry(QtCore.QRect(480, 340, 171, 51))
         self.label_goto_signup.setStyleSheet("color: #0085FF;\nfont-size: 16px;\nborder: none;\ntext-decoration: underline;")
         self.label_goto_signup.setObjectName("label_goto_signup")
+
+    # ============================ Password Toggle Functions =============================
+    def toggle_signup_password(self):
+        if self.lineEdit_password.echoMode() == QtWidgets.QLineEdit.Password:
+            self.lineEdit_password.setEchoMode(QtWidgets.QLineEdit.Normal)
+            self.lineEdit_confirm_password.setEchoMode(QtWidgets.QLineEdit.Normal)
+            self.pushButton_show_password.setText("🔒")
+        else:
+            self.lineEdit_password.setEchoMode(QtWidgets.QLineEdit.Password)
+            self.lineEdit_confirm_password.setEchoMode(QtWidgets.QLineEdit.Password)
+            self.pushButton_show_password.setText("🔓")
+
+    def toggle_login_password(self):
+        if self.lineEdit_login_password.echoMode() == QtWidgets.QLineEdit.Password:
+            self.lineEdit_login_password.setEchoMode(QtWidgets.QLineEdit.Normal)
+            self.pushButton_show_login_password.setText("🔒")
+        else:
+            self.lineEdit_login_password.setEchoMode(QtWidgets.QLineEdit.Password)
+            self.pushButton_show_login_password.setText("🔓")
 
     # ============================ Input Validators =============================
     def onPasswordChanged(self):
@@ -214,10 +284,13 @@ class Ui_self(QtWidgets.QMainWindow):
 
         if "@" not in email or ".com" not in email:
             self.label_warning.setText("Invalid email format. Please include '@' and '.com'.")
+            self.pushButton_signup.setEnabled(False)
         elif password != confirm_password:
             self.label_warning.setText("Passwords do not match.")
+            self.pushButton_signup.setEnabled(False)
         else:
             self.label_warning.clear()
+            self.pushButton_signup.setEnabled(True)
             return email, confirm_password
 
     def onTextChanged(self):
@@ -226,8 +299,10 @@ class Ui_self(QtWidgets.QMainWindow):
 
         if not first_name or not last_name:
             self.label_warning.setText("First name and last name cannot be empty.")
+            self.pushButton_signup.setEnabled(False)
         else:
             self.label_warning.clear()
+            self.pushButton_signup.setEnabled(True)
             return first_name, last_name
 
     def onLoginChanged(self):
@@ -236,8 +311,13 @@ class Ui_self(QtWidgets.QMainWindow):
 
         if "@" not in login_email or ".com" not in login_email:
             self.label_warning_login.setText("Invalid email format. Please include '@' and '.com'.")
+            self.pushButton_login_page.setEnabled(False)
+        elif not password:
+            self.label_warning_login.setText("Password cannot be empty.")
+            self.pushButton_login_page.setEnabled(False)
         else:
             self.label_warning_login.clear()
+            self.pushButton_login_page.setEnabled(True)
             return login_email, password
 
     def onGenderSelected(self):
@@ -260,7 +340,7 @@ NOVA is your intelligent desktop assistant, designed to seamlessly control your 
 Let NOVA handle the details, so you can focus on what matters!
 """, B1="learn More", B2="Launch Nova")
             if r:
-                webbrowser.open("https://github.com/Siddiq2772/nova_assistant")
+                webbrowser.open("https://amshadab.github.io/Nova-Landing-Page/")
                 self.open_main()
             else:
                 self.open_main()

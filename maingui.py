@@ -4,7 +4,6 @@ import os
 import threading
 import time
 import re
-import datetime
 # ==============================================================================
 
 
@@ -173,7 +172,7 @@ class ChatWindow(QWidget, QThread):
                 border: none;
                 padding-left: 30px;
             }
-            QScrollBar:vertical {
+            QScrollBar:vertical, QScrollBar:horizontal {
                 border: none;
                 background: #07151E;
                                        
@@ -181,22 +180,23 @@ class ChatWindow(QWidget, QThread):
                 margin: 0px 0px 0px 0px;
                 border-radius: 4px;
             }
-            QScrollBar::handle:vertical {
+            QScrollBar::handle {
                 background: #0085FF;
                 min-height: 20px;
                 border-radius: 4px;
             }
-            QScrollBar::handle:vertical:hover {
+            QScrollBar::handle:hover {
                 background: #0085FF;
             }
-            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            QScrollBar::add-line, QScrollBar::sub-line {
                 background: none;
                 height: 0px;
             }
-            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+            QScrollBar::add-page, QScrollBar::sub-page {
                 background: none;
             }
         """)
+        
         # ==================================================================================
 
         # =============================== Input Area Layout ================================
@@ -781,7 +781,6 @@ class NovaInterface(QWidget):
         while len(number) <= 9:
             number = CustomInputBox.show_input_dialog(f"The provided phone number have only {len(number)} digits Please Enter again")
         in_custom_message_box = False
-        now = datetime.now()
         country_code = "+91"
         number = f"{country_code}{number}"
         threading.Thread(target=kit.sendwhatmsg_instantly, args=(number, message)).start()
