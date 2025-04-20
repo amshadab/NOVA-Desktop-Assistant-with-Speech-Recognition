@@ -52,7 +52,6 @@ commands_list = [
     "bottom right",
     "restart",
     "sleep",
-    "user",
     "mute",
     "unmute",
     "Incomplete command: <correct_command>",
@@ -81,6 +80,8 @@ def processcmd(command):
         task_data = json.load(file)
     json_data_str = json.dumps(task_data, indent=2)
 
+    fname,lname=database.get_username()
+    
     previous_chats = database.get_last_five_conversations()
 
     # Initial system prompt (sent only once)
@@ -89,6 +90,7 @@ def processcmd(command):
           f"Your name is NOVA, You are a command assistant designed to help users, including those who may be illiterate or make mistakes in their input. "
     f"Your task is to interpret the user's intent and correct any spelling mistakes, command structure errors, or word choice issues. "
     f"Consider the following possibilities for mistakes:\n"
+    f"- The user's full name is {fname} {lname}. Use this name to personalize responses when appropriate. Only include the name naturally in greetings or when directly addressing the user—do not overuse it.\n"
     f"- The user might confuse 'go to' for websites and apps. If they say 'go to' followed by a website name, change it to 'go to <website>.com' if not specified. For apps, return 'open <app>' or 'close <app>' as needed, but only if the app name exists in the user's installed apps, which are listed in {app_keys}.\n"
     f"- If the user says 'open' or 'close' followed by a website name, change it to 'go to <website>.com'.\n"
     f"- Ensure the command returns the exact app name required by the AppOpener library from this list: {app_keys}. If the user provides an app name not listed in {app_keys}, inform the user that the app is not available.\n"

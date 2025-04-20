@@ -111,117 +111,192 @@ def wish():
 
 
 def copy():
-    pyautogui.hotkey('ctrl', 'c')
-    return "Successfully copied to clipboard."
+    try:
+        pyautogui.hotkey('ctrl', 'c')
+        return "Successfully copied to clipboard."
+    except:
+        return "Something went Wrong"
 
 def paste():
-    pyautogui.hotkey('ctrl', 'v')
-    return "Successfully pasted from clipboard."
+    try:
+        pyautogui.hotkey('ctrl', 'v')
+        return "Successfully pasted from clipboard."
+    except:
+        return "Something went Wrong"
 
 def cut():
-    pyautogui.hotkey('ctrl', 'x')
-    return "Successfully cut to clipboard."
+    try:
+        pyautogui.hotkey('ctrl', 'x')
+        return "Successfully cut to clipboard."
+    except:
+        return "Something went Wrong"
 
 def undo():
-    pyautogui.hotkey('ctrl', 'z')
-    return "Successfully undone the last action."
+    try:
+        pyautogui.hotkey('ctrl', 'z')
+        return "Successfully undone the last action."
+    except:
+        return "Something went Wrong"
 
 def open_clipboard():
-    pyautogui.hotkey('win', 'v')
-    return "Successfully opened clipboard history."
+    try:
+        pyautogui.hotkey('win', 'v')
+        return "Successfully opened clipboard history."
+    except:
+        return "Something went Wrong"
 
 def save():
-    pyautogui.hotkey('ctrl', 's')
-    return "Successfully saved the file."
+    try:
+        pyautogui.hotkey('ctrl', 's')
+        return "Successfully saved the file."
+    except:
+        return "Something went Wrong"
 
 def new_tab():
-    pyautogui.hotkey('ctrl', 't')
-    return "Successfully opened a new tab."
+    try:
+        pyautogui.hotkey('ctrl', 't')
+        return "Successfully opened a new tab."
+    except:
+        return "Something went Wrong"
 
 def select_all():
-    pyautogui.hotkey('ctrl', 'a')
-    return "Successfully selected all text/items."
+    try:
+        pyautogui.hotkey('ctrl', 'a')
+        return "Successfully selected all text/items."
+    except:
+        return "Something went Wrong"
 
 def close_tab():
-    pyautogui.hotkey('ctrl', 'w')
-    return "Successfully closed the tab."
+    try:
+        pyautogui.hotkey('ctrl', 'w')
+        return "Successfully closed the tab."
+    except:
+        return "Something went Wrong"
 
 def alt_tab():
-    pyautogui.hotkey('alt', 'tab')
-    return "Successfully switched to the next window."
+    try:
+        pyautogui.hotkey('alt', 'tab')
+        return "Successfully switched to the next window."
+    except:
+        return "Something went Wrong"
 
 def show_desktop():
-    pyautogui.hotkey('win', 'd')
-    return "Successfully minimized all windows and showed the desktop."
+    try:
+        pyautogui.hotkey('win', 'd')
+        return "Successfully minimized all windows and showed the desktop."
+    except:
+        return "Something went Wrong"
 
 def minimize_all():
-    pyautogui.hotkey('win', 'm')
-    return "Successfully minimized all windows."
+    try:
+        pyautogui.hotkey('win', 'm')
+        return "Successfully minimized all windows."
+    except:
+        return "Something went Wrong"
 
 def find():
-    pyautogui.hotkey('ctrl', 'f')
-    return "Successfully opened the Find/Search dialog."
+    try:
+        pyautogui.hotkey('ctrl', 'f')
+        return "Successfully opened the Find/Search dialog."
+    except:
+        return "Something went Wrong"
 
 def new_window():
-    pyautogui.hotkey('ctrl', 'n')
-    return "Successfully opened a new window."
+    try:
+        pyautogui.hotkey('ctrl', 'n')
+        return "Successfully opened a new window."
+    except:
+        return "Something went Wrong"
 
 def open_start():
-    pyautogui.press('win')
-    return "Successfully opened the Start menu."
+    try:
+        pyautogui.press('win')
+        return "Successfully opened the Start menu."
+    except:
+        return "Something went Wrong"
 
 def notifications():
-    pyautogui.hotkey('win', 'n')
-    return "Successfully opened the notifications panel."
+    try:
+        pyautogui.hotkey('win', 'n')
+        return "Successfully opened the notifications panel."
+    except:
+        return "Something went Wrong"
 
 def new_virtual_desktop():
-    pyautogui.hotkey('ctrl', 'win', 'd')
-    return "Successfully created a new virtual desktop."
+    try:
+        pyautogui.hotkey('ctrl', 'win', 'd')
+        return "Successfully created a new virtual desktop."
+    except:
+        return "Something went Wrong"
 
 def switch_virtual_desktop_right():
-    pyautogui.hotkey('ctrl', 'win', 'right')
-    return "Successfully switched to the next virtual desktop."
+    try:
+        pyautogui.hotkey('ctrl', 'win', 'right')
+        return "Successfully switched to the next virtual desktop."
+    except:
+        return "Something went Wrong"
 def switch_virtual_desktop_left():
-    pyautogui.hotkey('ctrl', 'win', 'left')
-    return "Successfully switched to the previous virtual desktop."
+    try:
+        pyautogui.hotkey('ctrl', 'win', 'left')
+        return "Successfully switched to the previous virtual desktop."
+    except:
+        return "Something went Wrong"
 
 def close_virtual_desktop():
-    pyautogui.hotkey('ctrl', 'win', 'f4')
-    return "Successfully closed the current virtual desktop."
+    try:
+        pyautogui.hotkey('ctrl', 'win', 'f4')
+        return "Successfully closed the current virtual desktop."
+    except:
+        return "Something went Wrong"
 
 def volume_up():
-    pyautogui.press('volumeup')
-    return "Successfully increased the volume."
+    try:
+        pyautogui.press('volumeup')
+        return "Successfully increased the volume."
+    except:
+        return "Something went Wrong"
 
 def volume_down():
-    pyautogui.press('volumedown')
-    return "Successfully decreased the volume."
+    try:
+        pyautogui.press('volumedown')
+        return "Successfully decreased the volume."
+    except:
+        return "Something went Wrong"
 
 def brightness_up():
-    wmi_interface = wmi.WMI(namespace='wmi')
-    brightness_info = wmi_interface.WmiMonitorBrightness()[0]
-    current_brightness = brightness_info.CurrentBrightness
-    new_brightness = min(current_brightness + 1, 100)
+    try:
+        wmi_interface = wmi.WMI(namespace='wmi')
+        brightness_info = wmi_interface.WmiMonitorBrightness()[0]
+        current_brightness = brightness_info.CurrentBrightness
+        new_brightness = min(current_brightness + 1, 100)
 
-    brightness_method = wmi_interface.WmiMonitorBrightnessMethods()[0]
-    brightness_method.WmiSetBrightness(Brightness=new_brightness, Timeout=0)
+        brightness_method = wmi_interface.WmiMonitorBrightnessMethods()[0]
+        brightness_method.WmiSetBrightness(Brightness=new_brightness, Timeout=0)
 
-    return f"Successfully increased the brightness from {current_brightness}% to {new_brightness}%."
+        return f"Successfully increased the brightness from {current_brightness}% to {new_brightness}%."
+    except Exception as e:
+        return "Something went Wrong"
 
 def brightness_down():
-    wmi_interface = wmi.WMI(namespace='wmi')
-    brightness_info = wmi_interface.WmiMonitorBrightness()[0]
-    current_brightness = brightness_info.CurrentBrightness
-    new_brightness = max(current_brightness - 1, 0)
+    try:
+        wmi_interface = wmi.WMI(namespace='wmi')
+        brightness_info = wmi_interface.WmiMonitorBrightness()[0]
+        current_brightness = brightness_info.CurrentBrightness
+        new_brightness = max(current_brightness - 1, 0)
 
-    brightness_method = wmi_interface.WmiMonitorBrightnessMethods()[0]
-    brightness_method.WmiSetBrightness(Brightness=new_brightness, Timeout=0)
+        brightness_method = wmi_interface.WmiMonitorBrightnessMethods()[0]
+        brightness_method.WmiSetBrightness(Brightness=new_brightness, Timeout=0)
 
-    return f"Successfully decreased the brightness from {current_brightness}% to {new_brightness}%."
+        return f"Successfully decreased the brightness from {current_brightness}% to {new_brightness}%."
+    except Exception as e:
+        return "Something went Wrong"
 
 def bottom_right():
-    pyautogui.hotkey('win', 'a')
-    return "Successfully opened the Action Center."
+    try:
+        pyautogui.hotkey('win', 'a')
+        return "Successfully opened the Action Center."
+    except Exception as e:
+        return "Something went Wrong"
 
 def wiki(query):
     
@@ -231,7 +306,7 @@ def wiki(query):
         return f"According to wikipedia {result} for more information go to wikipedia.com"
         
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
        
 
 def google_search(query):
@@ -239,7 +314,7 @@ def google_search(query):
         kit.search(query)
         return f"{query} Searching from google"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
 
 
 def ytvideo(video_name):
@@ -247,7 +322,7 @@ def ytvideo(video_name):
         kit.playonyt(video_name)
         return f"{video_name} is going to play on YouTube"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
 
 def temperature(city):
     api_key = WEATHER_API_KEY  # replace with your actual WeatherAPI key
@@ -288,7 +363,7 @@ def open_apps(app_name):
         AppOpener.open(app_name,match_closest=True)
         return f"{app_name} is Opened"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
         
         
         
@@ -301,7 +376,7 @@ def mute():
         volume.SetMute(1, None)
         return "System muted!"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
 
 
 def unmute():
@@ -314,7 +389,7 @@ def unmute():
         volume.SetMute(0, None)
         return "System unmuted!"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
 
 def process_airesponse(response):
     for command in commands:
@@ -339,7 +414,7 @@ def battery():
         else:
             return "Battery not found" 
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
     
 
 def help_function():
@@ -569,7 +644,7 @@ def ip_address():
         ip=requests.get("https://api.ipify.org").text
         return f"Your IP Address is {ip}"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
 
 def minimize():
     
@@ -581,7 +656,7 @@ def minimize():
         else:
             return "Current window can't recognize"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
         
         
 def maximize():
@@ -595,7 +670,7 @@ def maximize():
         else:
             return "Current window can't recognize"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
         
               
 def closewindow():
@@ -608,7 +683,7 @@ def closewindow():
         else:
             return "Current can't recognize"
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
         
 
 
@@ -635,7 +710,7 @@ def close_apps(app_name):
          return "Sorry I can't close the app due to security concern and permission issues, If the app you want to close is your current window, then try again and say close the current window"
         return f"Closing {app_name}"   
     except Exception as e:
-        return f"Something went wrong {e}"
+        return f"Something went wrong"
 
 # def ai_mode(query):
 #     result=gemini_ai.aispeechmode(query)
@@ -689,68 +764,76 @@ def toggle_theme():
         return "Theme is now set to Light"
 
 def current_date():
-    current_date = datetime.now()
-    date_str = current_date.strftime("%B %d, %Y")
-    return f"Today's date is {date_str}"
-
+    try:
+        current_date = datetime.now()
+        date_str = current_date.strftime("%B %d, %Y")
+        return f"Today's date is {date_str}"
+    except Exception as e:
+        return "Something went Wrong"
 def generate_pdf(content):
+    try:
     # Initialize Tkinter root window
-    root = Tk()
-    root.withdraw()  # Hide the Tkinter root window
+        root = Tk()
+        root.withdraw()  # Hide the Tkinter root window
 
-    # Ask the user where to save the PDF
-    pdf_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")], title="Save PDF As")
-    
-    # Check if the user canceled the save dialog
-    if not pdf_path:
-        return "PDF generation was canceled."
+        # Ask the user where to save the PDF
+        pdf_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")], title="Save PDF As")
+        
+        # Check if the user canceled the save dialog
+        if not pdf_path:
+            return "PDF generation was canceled."
 
-    # Create PDF instance
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_page()
+        # Create PDF instance
+        pdf = FPDF()
+        pdf.set_auto_page_break(auto=True, margin=15)
+        pdf.add_page()
 
-    # Set font for the PDF
-    pdf.set_font("Arial", size=12)
+        # Set font for the PDF
+        pdf.set_font("Arial", size=12)
 
-    # Add content to the PDF
-    pdf.multi_cell(0, 10, content)
+        # Add content to the PDF
+        pdf.multi_cell(0, 10, content)
 
-    # Output the PDF to the chosen path
-    pdf.output(pdf_path)
-    
-    # Open the PDF if on Windows
-    if os.name == 'nt':
-        os.startfile(pdf_path)
+        # Output the PDF to the chosen path
+        pdf.output(pdf_path)
+        
+        # Open the PDF if on Windows
+        if os.name == 'nt':
+            os.startfile(pdf_path)
 
-    return f"PDF generated successfully: {pdf_path}"
+        return f"PDF generated successfully: {pdf_path}"
+    except Exception as e:
+        return "Something went Wrong"
 
 
 
 def generate_docx(content):
-    # Initialize Tkinter root window
-    root = Tk()
-    root.withdraw()  # Hide the Tkinter root window
+    try:
+        # Initialize Tkinter root window
+        root = Tk()
+        root.withdraw()  # Hide the Tkinter root window
 
-    # Ask the user where to save the DOCX
-    docx_path = filedialog.asksaveasfilename(defaultextension=".docx", filetypes=[("Word documents", "*.docx")], title="Save DOCX As")
-    
-    # Check if the user canceled the save dialog
-    if not docx_path:
-        return "DOCX generation was canceled."
+        # Ask the user where to save the DOCX
+        docx_path = filedialog.asksaveasfilename(defaultextension=".docx", filetypes=[("Word documents", "*.docx")], title="Save DOCX As")
+        
+        # Check if the user canceled the save dialog
+        if not docx_path:
+            return "DOCX generation was canceled."
 
-    # Create a new Word document
-    doc = Document()
-    doc.add_paragraph(content)
+        # Create a new Word document
+        doc = Document()
+        doc.add_paragraph(content)
 
-    # Save the document to the chosen path
-    doc.save(docx_path)
+        # Save the document to the chosen path
+        doc.save(docx_path)
 
-    # Open the DOCX if on Windows
-    if os.name == 'nt':
-        os.startfile(docx_path)
+        # Open the DOCX if on Windows
+        if os.name == 'nt':
+            os.startfile(docx_path)
 
-    return f"DOCX generated successfully: {docx_path}"
+        return f"DOCX generated successfully: {docx_path}"
+    except Exception as e:
+        return "Something went Wrong"
 
 
 def default_fucntion(query):
