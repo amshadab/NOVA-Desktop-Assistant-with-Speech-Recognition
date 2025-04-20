@@ -1,5 +1,6 @@
 import google.generativeai as ai
 from google.generativeai.types.generation_types import StopCandidateException
+from google.api_core import exceptions
 import json
 import AppOpener
 from config import API_KEY
@@ -29,7 +30,7 @@ commands_list = [
     "paste",
     "cut",
     "undo",
-    "open clipboard",
+    "clipboard",
     "save",
     "new tab",
     "select all",
@@ -176,6 +177,7 @@ def processcmd(command):
         )
         chat.send_message(initial_prompt)
 
+
     try:
         response = chat.send_message(command)
         matched_command = response.text.strip()
@@ -186,6 +188,14 @@ def processcmd(command):
         print("AI Error: That question seems to be causing an issue. Please try rephrasing.")
         print(f"Error Details: {e}")
         return "Command not recognized. Please try again."
+    except exceptions.QuotaExceeded as e:
+        print("AI Error: You have exceeded your API quota. Please check your API usage or try again later.")
+        print(f"Error Details: {e}")
+        return "API Quota Exceeded. Please try again later."
+    except exceptions.ResourceExhausted as e:
+        print("AI Error: The API is currently experiencing high traffic. Please try again after some time.")
+        print(f"Error Details: {e}")
+        return "API Resource Exhausted. Please try again later."
     except Exception as e:
         print("AI Error: Sorry, something went wrong.")
         print(f"Error: {e}")
