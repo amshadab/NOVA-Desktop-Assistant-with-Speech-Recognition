@@ -543,9 +543,9 @@ def help_function():
 "  - Example: 'ctrl + down'\n"
 "  - Decreases the screen brightness.\n\n"
 
-"(47) **BOTTOM RIGHT**\n"
-"  - Example: 'toggle Airplane Mode'\n"
-"  - Toggles various system functions in the bottom right corner.\n\n"
+"(47) **Open Action Center**\n"
+"  - Example: 'You can toggle Airplane Mode'\n"
+"  - You can Toggles various system functions in the bottom right corner.\n\n"
     )
     return help_text
     
