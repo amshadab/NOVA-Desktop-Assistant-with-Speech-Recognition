@@ -42,6 +42,7 @@ themeColor = '#0085FF' #the blue theme color
 speaking = True  # is reprsent if the speaking is working or not
 prompt = "none" # it is used to send the input from gui to chatthread 
 thread = True # to check if the user want to destroy the thread
+up_key_press_count = 0 # to count the up arrow key press count
 btnStyle = f"background-color: #07151E; font-size: {BtnTextFont}; color: {themeColor}; padding: 5px; border-radius:30px; border:5px solid {themeColor}" #common button style
 movie = None # varidle for animation , it is global because it needs to take the animation in the popup and the maingui
 
@@ -248,11 +249,6 @@ class ChatWindow(QWidget, QThread):
         """) 
 
         scrollbar = self.scroll_area.verticalScrollBar()
-        self.animation = QPropertyAnimation(scrollbar, b"value")
-        self.animation.setDuration(500)
-        self.animation.setStartValue(scrollbar.value())
-        self.animation.setEndValue(scrollbar.maximum())
-        self.animation.start()
         # ==================================================================================
 
     # ============================== Send Button Function ===============================
@@ -274,9 +270,9 @@ class ChatWindow(QWidget, QThread):
     # ===================================================================================
 
     # ========================= Get Last Message from History ===========================
-    def get_last_message(self):
-        if self.message_history:
-            return self.message_history[-1]
+    def get_last_message(self,count):
+        if self.message_history and count<=len(self.message_history):
+            return self.message_history[-1*count]
         return ""
     # ===================================================================================
 
@@ -287,7 +283,8 @@ class ChatWindow(QWidget, QThread):
 
         if message.startswith("You: "):
             is_sent = True
-            self.message_history.append(message.replace("You: ", ""))
+            self.message_history.append(message.replace("You: ", "",1))
+            message = message.replace("You: ", "",1)
 
         # Split message into text and code blocks
         code_blocks = re.findall(r"```(.*?)```", message, re.DOTALL)
@@ -680,16 +677,19 @@ class NovaInterface(QWidget):
         self.sk_label.setText(text)
 
     def eventFilter(self, obj, event):
+        global  up_key_press_count
         if obj == self.chat_window.message_input and event.type() == event.KeyPress:
             if event.key() == Qt.Key_Return and not event.modifiers():
                 if not toggleMic:
                     self.chat_window.send_message()
+                    up_key_press_count = 0
                 return True
             elif event.key() == Qt.Key_Return and event.modifiers() == Qt.ShiftModifier:
                 self.chat_window.message_input.insertPlainText("\n")
                 return True
             elif event.key() == Qt.Key_Up:
-                last_message = self.chat_window.get_last_message()
+                up_key_press_count += 1 
+                last_message = self.chat_window.get_last_message(up_key_press_count)
                 if last_message:
                     self.chat_window.message_input.setPlainText(last_message)
                     self.chat_window.message_input.moveCursor(QtGui.QTextCursor.End)
