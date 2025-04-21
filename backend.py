@@ -742,7 +742,7 @@ def exit_fucntion():
 def write_anything(text):
     
     # Type the modified text
-    pyautogui.write(text, interval=0.1)
+    pyautogui.write(text, interval=0)
     return "Your text is successfully written"
 
 def toggle_theme():
