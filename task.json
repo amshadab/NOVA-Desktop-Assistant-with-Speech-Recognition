@@ -662,7 +662,45 @@
           "assistant_output": "docx"
         }
       ]
+    },
+    {
+      "description": "Handles general questions, code requests, and natural language prompts. Always responds in the format: 'AI mode: <response>'.",
+      "examples": [
+        {
+          "user_input": "What is a function in Python?",
+          "assistant_output": "AI mode: In Python, a function is a reusable block of code that performs a specific task."
+        },
+        {
+          "user_input": "Give me Python code to reverse a string.",
+          "assistant_output": "AI mode: def reverse_string(s):\n    return s[::-1]"
+        },
+        {
+          "user_input": "What is the capital of Japan?",
+          "assistant_output": "AI mode: The capital of Japan is Tokyo."
+        },
+        {
+          "user_input": "Tell me a joke.",
+          "assistant_output": "AI mode: Why don't scientists trust atoms? Because they make up everything!"
+        },
+        {
+          "user_input": "Write a short poem on the night sky.",
+          "assistant_output": "AI mode: Stars that shimmer, moon so bright,\nGuard the silence of the night."
+        },
+        {
+          "user_input": "Explain what recursion is.",
+          "assistant_output": "AI mode: Recursion is a method where a function calls itself to solve a smaller instance of the same problem."
+        },
+        {
+          "user_input": "What is 25 times 4?",
+          "assistant_output": "AI mode: 25 times 4 is 100."
+        },
+        {
+          "user_input": "What is an API?",
+          "assistant_output": "AI mode: An API (Application Programming Interface) allows different software systems to communicate with each other."
+        }
+      ]
     }
+    
     
     
     
